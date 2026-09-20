@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Burning Hot - PRO v80</title>
+    <title>Burning Hot - PRO v100</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         :root {
@@ -199,30 +199,49 @@
             max-width: 280px;
         }
 
-        .modal-content h3 { color: var(--gold); margin-bottom: 10px; font-size: 14px; }
+        .modal-content h3 { color: var(--gold); margin-bottom: 8px; font-size: 13px; }
+        .modal-content p { font-size: 9px; color: #ccc; margin-bottom: 8px; }
+
+        .option-input {
+            width: 100%;
+            padding: 7px;
+            background: #010602;
+            border: 1px solid var(--gold);
+            color: #fff;
+            border-radius: 4px;
+            font-size: 12px;
+            text-align: center;
+            margin-bottom: 6px;
+            outline: none;
+        }
 
         .option-btn {
             background: #051808;
             border: 1px solid var(--gold);
             color: #fff;
-            padding: 8px;
-            margin: 4px 0;
+            padding: 7px;
+            margin: 3px 0;
             border-radius: 4px;
             width: 100%;
             cursor: pointer;
             font-weight: bold;
-            font-size: 12px;
+            font-size: 11px;
+        }
+
+        .option-btn:hover {
+            background: var(--gold);
+            color: #000;
         }
 
         .close-modal {
-            margin-top: 8px;
+            margin-top: 6px;
             background: #444;
             color: #fff;
             border: none;
-            padding: 5px 10px;
+            padding: 4px 8px;
             border-radius: 3px;
             cursor: pointer;
-            font-size: 11px;
+            font-size: 10px;
         }
     </style>
 </head>
@@ -288,19 +307,27 @@
         <button class="spin-btn" id="spinBtn" onclick="startSpin()">ՊՏՏԵԼ</button>
     </div>
 
+    <!-- Դեպոզիտի Մոդալ -->
     <div class="modal" id="topUpModal">
         <div class="modal-content">
-            <h3>ԴԵՊՈԶԻՏ</h3>
-            <button class="option-btn" onclick="topUp(1000)">Համալրել +1000 ֏</button>
-            <button class="option-btn" onclick="topUp(5000)">Համալրել +5000 ֏</button>
+            <h3>ԴԵՊՈԶԻՏ (Նվազ. 100 ֏)</h3>
+            <p>Մուտքագրեք կամ ընտրեք գումարը</p>
+            <input type="number" id="topUpInput" class="option-input" value="1000" min="100" />
+            <button class="option-btn" onclick="customTopUp()">Համալրել նշվածը</button>
+            <button class="option-btn" onclick="topUpQuick(500)">+ 500 ֏</button>
+            <button class="option-btn" onclick="topUpQuick(1000)">+ 1,000 ֏</button>
             <button class="close-modal" onclick="closeModal('topUpModal')">Փակել</button>
         </div>
     </div>
 
+    <!-- Կանխիկացման Մոդալ -->
     <div class="modal" id="cashoutModal">
         <div class="modal-content">
-            <h3>ԿԱՆԽԻԿԱՑՈՒՄ</h3>
-            <button class="option-btn" onclick="processCashout()">Կանխիկացնել ամբողջը</button>
+            <h3>ԿԱՆԽԻԿԱՑՈՒՄ (Նվազ. 500 ֏)</h3>
+            <p>Մուտքագրեք հանվող գումարը</p>
+            <input type="number" id="cashoutInput" class="option-input" value="500" min="500" />
+            <button class="option-btn" onclick="customCashout()">Հանել նշված գումարը</button>
+            <button class="option-btn" onclick="cashoutAll()">Հանել ԱՄԲՈՂՋԸ</button>
             <button class="close-modal" onclick="closeModal('cashoutModal')">Փակել</button>
         </div>
     </div>
@@ -312,6 +339,50 @@
         let currentWin = 0;
         let isSpinning = false;
 
+        // Web Audio API ձայների համար
+        let audioCtx = null;
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }
+
+        function playSound(type) {
+            try {
+                initAudio();
+                if (!audioCtx) return;
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                let now = audioCtx.currentTime;
+
+                if (type === 'click') {
+                    osc.frequency.setValueAtTime(400, now);
+                    gain.gain.setValueAtTime(0.02, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+                    osc.start(now); osc.stop(now + 0.05);
+                } else if (type === 'spinTick') {
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(300 + Math.random() * 100, now);
+                    gain.gain.setValueAtTime(0.015, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
+                    osc.start(now); osc.stop(now + 0.04);
+                } else if (type === 'win') {
+                    osc.type = 'square';
+                    osc.frequency.setValueAtTime(523.25, now);
+                    osc.frequency.setValueAtTime(659.25, now + 0.15);
+                    osc.frequency.setValueAtTime(783.99, now + 0.3);
+                    gain.gain.setValueAtTime(0.05, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.6);
+                    osc.start(now); osc.stop(now + 0.6);
+                }
+            } catch(e) {}
+        }
+
         function updateUI() {
             document.getElementById('balanceVal').innerText = balance + ' ֏';
             document.getElementById('winVal').innerText = currentWin + ' ֏';
@@ -319,6 +390,7 @@
 
         function setBet(amount, btn) {
             if (isSpinning) return;
+            playSound('click');
             currentBet = amount;
             document.querySelectorAll('.bet-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
@@ -326,11 +398,13 @@
 
         function startSpin() {
             if (isSpinning) return;
+            initAudio();
             if (balance < currentBet) {
-                alert('Բալանսը բավարար չէ։');
+                alert('Բալանսը բավարար չէ խաղադրույքի համար։');
                 return;
             }
 
+            playSound('click');
             balance -= currentBet;
             currentWin = 0;
             updateUI();
@@ -347,13 +421,13 @@
             let interval = setInterval(() => {
                 cells.forEach(c => {
                     c.innerText = symbols[Math.floor(Math.random() * symbols.length)];
+                    playSound('spinTick');
                 });
-            }, 80);
+            }, 70);
 
             setTimeout(() => {
                 clearInterval(interval);
                 
-                // Վերջնական արդյունք
                 let finalSymbols = [];
                 cells.forEach(c => {
                     let sym = symbols[Math.floor(Math.random() * symbols.length)];
@@ -361,47 +435,78 @@
                     finalSymbols.push(sym);
                 });
 
-                // Պարզ շահումի ստուգում (միջին տողի համար)
+                // Հաղթանակի ստուգում (միջին տող)
                 if (finalSymbols[5] === finalSymbols[6] && finalSymbols[6] === finalSymbols[7]) {
                     currentWin = currentBet * 10;
                     balance += currentWin;
                     cells[5].classList.add('winning');
                     cells[6].classList.add('winning');
                     cells[7].classList.add('winning');
+                    playSound('win');
                 }
 
                 isSpinning = false;
                 spinBtn.disabled = false;
                 spinBtn.innerText = 'ՊՏՏԵԼ';
                 updateUI();
-            }, 1200);
+            }, 1000);
         }
 
         function openModal(id) {
+            playSound('click');
             document.getElementById(id).style.display = 'flex';
         }
 
         function closeModal(id) {
+            playSound('click');
             document.getElementById(id).style.display = 'none';
         }
 
-        function topUp(amount) {
+        function topUpQuick(amount) {
             balance += amount;
             updateUI();
             closeModal('topUpModal');
             alert('Հաջողությամբ համալրվեց +' + amount + ' ֏');
         }
 
-        function processCashout() {
-            if (balance <= 0) {
-                alert('Բալանսը դատարկ է։');
+        function customTopUp() {
+            let val = parseInt(document.getElementById('topUpInput').value);
+            if (isNaN(val) || val < 100) {
+                alert('Նվազագույն դեպոզիտը 100 ֏ է։');
+                return;
+            }
+            balance += val;
+            updateUI();
+            closeModal('topUpModal');
+            alert('Հաջողությամբ համալրվեց +' + val + ' ֏');
+        }
+
+        function customCashout() {
+            let val = parseInt(document.getElementById('cashoutInput').value);
+            if (isNaN(val) || val < 500) {
+                alert('Նվազագույն կանխիկացումը 500 ֏ է։');
+                return;
+            }
+            if (val > balance) {
+                alert('Բալանսում այսքան գումար չկա։');
+                return;
+            }
+            balance -= val;
+            updateUI();
+            closeModal('cashoutModal');
+            alert('Հաջողությամբ կանխիկացվեց ' + val + ' ֏');
+        }
+
+        function cashoutAll() {
+            if (balance < 500) {
+                alert('Կանխիկացման նվազագույն գումարը 500 ֏ է։');
                 return;
             }
             let amt = balance;
             balance = 0;
             updateUI();
             closeModal('cashoutModal');
-            alert('Կանխիկացվեց ' + amt + ' ֏');
+            alert('Հաջողությամբ կանխիկացվեց ամբողջը՝ ' + amt + ' ֏');
         }
 
         updateUI();

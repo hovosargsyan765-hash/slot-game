@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Burning Hot - PRO v105</title>
+    <title>Burning Hot - PRO v107</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         :root {
@@ -239,24 +239,6 @@
             font-size: 10px;
         }
 
-        .gamble-buttons {
-            display: flex;
-            gap: 10px;
-            margin-top: 10px;
-        }
-
-        .gamble-btn {
-            flex: 1;
-            padding: 10px;
-            font-size: 12px;
-            font-weight: bold;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .red-card { background: #d32f2f; color: #fff; }
-        .black-card { background: #212121; color: #fff; border: 1px solid #777; }
-
         .close-modal {
             margin-top: 5px;
             background: #444;
@@ -349,18 +331,6 @@
         </div>
     </div>
 
-    <div class="modal" id="gambleModal">
-        <div class="modal-content">
-            <h3>GAMBLE - ԿՐԿՆԱՊԱՏԿՈՒՄ</h3>
-            <p id="gambleWinText">Շահում՝ 0 ֏</p>
-            <div class="gamble-buttons">
-                <button class="gamble-btn red-card" onclick="playGamble('red')">ԿԱՐՄԻՐ</button>
-                <button class="gamble-btn black-card" onclick="playGamble('black')">ՍԵՎ</button>
-            </div>
-            <button class="close-modal" style="margin-top: 10px; width: 100%; background: #2e7d32;" onclick="collectGamble()">ՎԵՐՑՆԵԼ</button>
-        </div>
-    </div>
-
     <script>
         const symbols = ['🍇', '🍉', '🍊', '🍑', '🍋', '🔔', '7', '⭐'];
         let balance = 1000;
@@ -370,6 +340,49 @@
         let spinInterval = null;
         let spinTimeout = null;
 
+        let audioCtx = null;
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }
+
+        function playSound(type) {
+            try {
+                initAudio();
+                if (!audioCtx) return;
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                let now = audioCtx.currentTime;
+
+                if (type === 'click') {
+                    osc.frequency.setValueAtTime(400, now);
+                    gain.gain.setValueAtTime(0.05, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+                    osc.start(now); osc.stop(now + 0.05);
+                } else if (type === 'spinTick') {
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(250 + Math.random() * 150, now);
+                    gain.gain.setValueAtTime(0.03, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
+                    osc.start(now); osc.stop(now + 0.04);
+                } else if (type === 'win') {
+                    osc.type = 'square';
+                    osc.frequency.setValueAtTime(523.25, now);
+                    osc.frequency.setValueAtTime(659.25, now + 0.15);
+                    osc.frequency.setValueAtTime(783.99, now + 0.3);
+                    gain.gain.setValueAtTime(0.08, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.6);
+                    osc.start(now); osc.stop(now + 0.6);
+                }
+            } catch(e) {}
+        }
+
         function updateUI() {
             document.getElementById('balanceVal').innerText = balance + ' ֏';
             document.getElementById('winVal').innerText = currentWin + ' ֏';
@@ -377,6 +390,7 @@
 
         function setBet(amount, btn) {
             if (isSpinning) return;
+            playSound('click');
             currentBet = amount;
             document.querySelectorAll('.bet-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
@@ -391,11 +405,13 @@
         }
 
         function startSpin() {
+            initAudio();
             if (balance < currentBet) {
                 alert('Բալանսը բավարար չէ։');
                 return;
             }
 
+            playSound('click');
             balance -= currentBet;
             currentWin = 0;
             updateUI();
@@ -420,6 +436,7 @@
                     } else {
                         c.classList.remove('seven-symbol');
                     }
+                    playSound('spinTick');
                 });
             }, 60);
 
@@ -453,7 +470,7 @@
                     cells[idx].innerText = sym;
                     
                     if (sym === '7') {
-                        cells[idx].classList.add('seven-symbol');
+                        cells.getElementById ? null : cells[idx].classList.add('seven-symbol');
                     } else {
                         cells[idx].classList.remove('seven-symbol');
                     }
@@ -478,38 +495,16 @@
 
             if(totalWinMultiplier > 0) {
                 currentWin = currentBet * totalWinMultiplier;
+                balance += currentWin;
                 winningIndices.forEach(idx => {
                     cells[idx].classList.remove('seven-symbol');
                     cells[idx].classList.add('winning');
                 });
+                playSound('win');
                 updateUI();
-                setTimeout(() => {
-                    document.getElementById('gambleWinText').innerText = 'Շահում՝ ' + currentWin + ' ֏';
-                    openModal('gambleModal');
-                }, 400);
             } else {
                 updateUI();
             }
-        }
-
-        function playGamble(choice) {
-            let actualColor = Math.random() < 0.5 ? 'red' : 'black';
-            if (choice === actualColor) {
-                currentWin *= 2;
-                document.getElementById('gambleWinText').innerText = 'ՃԻՇՏ Է! Շահում՝ ' + currentWin + ' ֏';
-            } else {
-                currentWin = 0;
-                updateUI();
-                alert('Չգուշակեցիք։');
-                closeModal('gambleModal');
-            }
-        }
-
-        function collectGamble() {
-            balance += currentWin;
-            currentWin = 0;
-            updateUI();
-            closeModal('gambleModal');
         }
 
         function openModal(id) { document.getElementById(id).style.display = 'flex'; }
@@ -537,4 +532,3 @@
     </script>
 </body>
 </html>
-

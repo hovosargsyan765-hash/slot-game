@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Burning Hot - PRO v103</title>
+    <title>Burning Hot - PRO v104</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         :root {
@@ -122,13 +122,13 @@
             font-size: 24px;
         }
 
-        /* Առանձին ոճ 7-նյակի համար (կապույտ ֆոնով, սպիտակ փայլուն տեքստով) */
+        /* Դասական Կարմիր 7-նյակ */
         .reel-cell.seven-symbol {
-            background: linear-gradient(135deg, #1e3c72, #2a5298);
-            color: #ffffff;
+            background: linear-gradient(135deg, #ff0000, #990000);
+            color: #ffeb3b;
             font-weight: 900;
-            text-shadow: 0 0 5px #00d2ff, 0 0 10px #00d2ff;
-            border-color: #00d2ff;
+            text-shadow: 0 0 5px #ffeb3b;
+            border-color: #ffcc00;
         }
 
         .reel-cell.winning {
@@ -245,6 +245,24 @@
             color: #000;
         }
 
+        .gamble-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .gamble-btn {
+            flex: 1;
+            padding: 10px;
+            font-size: 12px;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .red-card { background: #d32f2f; color: #fff; }
+        .black-card { background: #212121; color: #fff; border: 1px solid #777; }
+
         .close-modal {
             margin-top: 5px;
             background: #444;
@@ -289,19 +307,19 @@
     <div class="slot-container">
         <div class="grid-5x3" id="slotGrid">
             <div class="reel-cell" data-index="0">🍇</div>
-            <div class="reel-cell" data-index="1">☘️</div>
+            <div class="reel-cell" data-index="1">⭐</div>
             <div class="reel-cell" data-index="2">🍊</div>
             <div class="reel-cell" data-index="3">🔔</div>
             <div class="reel-cell seven-symbol" data-index="4">7</div>
 
             <div class="reel-cell" data-index="5">🍉</div>
-            <div class="reel-cell" data-index="6">☘️</div>
+            <div class="reel-cell" data-index="6">⭐</div>
             <div class="reel-cell" data-index="7">🍊</div>
             <div class="reel-cell" data-index="8">🍉</div>
             <div class="reel-cell" data-index="9">🍇</div>
 
             <div class="reel-cell" data-index="10">🍇</div>
-            <div class="reel-cell" data-index="11">☘️</div>
+            <div class="reel-cell" data-index="11">⭐</div>
             <div class="reel-cell seven-symbol" data-index="12">7</div>
             <div class="reel-cell" data-index="13">🍑</div>
             <div class="reel-cell" data-index="14">🔔</div>
@@ -344,8 +362,22 @@
         </div>
     </div>
 
+    <!-- Gamble (Ռիսկային Խաղ) Մոդալ -->
+    <div class="modal" id="gambleModal">
+        <div class="modal-content">
+            <h3>GAMBLE - ԿՐԿՆԱՊԱՏԿՈՒՄ</h3>
+            <p>Գուշակեք քարտի գույնը՝ շահումը կրկնապատկելու համար[span_1](start_span)[span_1](end_span)</p>
+            <p style="font-size: 11px; color: var(--gold); margin: 8px 0;" id="gambleWinText">Շահում՝ 0 ֏</p>
+            <div class="gamble-buttons">
+                <button class="gamble-btn red-card" onclick="playGamble('red')">❤️ ԿԱՐՄԻՐ</button>
+                <button class="gamble-btn black-card" onclick="playGamble('black')">♠️ ՍԵՎ</button>
+            </div>
+            <button class="close-modal" style="margin-top: 10px; width: 100%; background: #2e7d32;" onclick="collectGamble()">ՎԵՐՑՆԵԼ ՇԱՀՈՒՄԸ</button>
+        </div>
+    </div>
+
     <script>
-        const symbols = ['🍇', '🍉', '🍊', '🍑', '🍋', '🔔', '7', '☘️'];
+        const symbols = ['🍇', '🍉', '🍊', '🍑', '🍋', '🔔', '7', '⭐'];
         let balance = 1000;
         let currentBet = 20;
         let currentWin = 0;
@@ -508,75 +540,44 @@
 
             if(totalWinMultiplier > 0) {
                 currentWin = currentBet * totalWinMultiplier;
-                balance += currentWin;
                 winningIndices.forEach(idx => {
                     cells[idx].classList.remove('seven-symbol');
                     cells[idx].classList.add('winning');
                 });
                 playSound('win');
+                updateUI();
+                
+                // Բացել Gamble պատուհանը շահելուց հետո
+                setTimeout(() => {
+                    document.getElementById('gambleWinText').innerText = 'Շահում՝ ' + currentWin + ' ֏';
+                    openModal('gambleModal');
+                }, 500);
+            } else {
+                updateUI();
             }
+        }
 
+        function playGamble(choice) {
+            playSound('click');
+            let actualColor = Math.random() < 0.5 ? 'red' : 'black';
+            if (choice === actualColor) {
+                currentWin *= 2;
+                document.getElementById('gambleWinText').innerText = 'ՃԻՇՏ Է! Շահում՝ ' + currentWin + ' ֏';
+                playSound('win');
+            } else {
+                currentWin = 0;
+                updateUI();
+                alert('Ցավոք սրտի, չգուշակեցիք։ Շահումն այրվեց։');
+                closeModal('gambleModal');
+            }
+        }
+
+        function collectGamble() {
+            balance += currentWin;
+            currentWin = 0;
             updateUI();
+            closeModal('gambleModal');
         }
 
         function openModal(id) {
-            playSound('click');
-            document.getElementById(id).style.display = 'flex';
-        }
-
-        function closeModal(id) {
-            playSound('click');
-            document.getElementById(id).style.display = 'none';
-        }
-
-        function topUpQuick(amount) {
-            balance += amount;
-            updateUI();
-            closeModal('topUpModal');
-            alert('Հաջողությամբ համալրվեց +' + amount + ' ֏');
-        }
-
-        function customTopUp() {
-            let val = parseInt(document.getElementById('topUpInput').value);
-            if (isNaN(val) || val < 100) {
-                alert('Նվազագույն դեպոզիտը 100 ֏ է։');
-                return;
-            }
-            balance += val;
-            updateUI();
-            closeModal('topUpModal');
-            alert('Հաջողությամբ համալրվեց +' + val + ' ֏');
-        }
-
-        function customCashout() {
-            let val = parseInt(document.getElementById('cashoutInput').value);
-            if (isNaN(val) || val < 500) {
-                alert('Նվազագույն կանխիկացումը 500 ֏ է։');
-                return;
-            }
-            if (val > balance) {
-                alert('Բալանսում այսքան գումար չկա։');
-                return;
-            }
-            balance -= val;
-            updateUI();
-            closeModal('cashoutModal');
-            alert('Հաջողությամբ կանխիկացվեց ' + val + ' ֏');
-        }
-
-        function cashoutAll() {
-            if (balance < 500) {
-                alert('Կանխիկացման նվազագույն գումարը 500 ֏ է։');
-                return;
-            }
-            let amt = balance;
-            balance = 0;
-            updateUI();
-            closeModal('cashoutModal');
-            alert('Հաջողությամբ կանխիկացվեց ամբողջը՝ ' + amt + ' ֏');
-        }
-
-        updateUI();
-    </script>
-</body>
-</html>
+            document.getElementById(id).style.display = 'flex'

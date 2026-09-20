@@ -3,144 +3,254 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>9-Slot Telegram Game</title>
+    <title>Mega 9-Slots Casino</title>
     <style>
+        * {
+            box-sizing: border-box;
+            user-select: none;
+        }
         body {
-            background-color: #0b0f19;
-            color: #ffffff;
-            font-family: Arial, sans-serif;
+            background: radial-gradient(circle, #1a0033 0%, #05000a 100%);
+            color: #fff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 15px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100vh;
-            margin: 0;
-            user-select: none;
+            min-height: 100vh;
         }
-        h1 { color: #f59e0b; margin-bottom: 5px; font-size: 24px; }
-        .balance-box {
-            font-size: 20px;
-            margin-bottom: 15px;
-            background: #1e293b;
-            padding: 8px 18px;
+        .header-title {
+            font-size: 26px;
+            font-weight: 900;
+            color: #ffd700;
+            text-shadow: 0 0 10px #ff0055, 0 0 20px #ff0055;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .balance-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid #ffd700;
             border-radius: 20px;
-            border: 1px solid #f59e0b;
+            padding: 8px 25px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #fff;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+            margin-bottom: 20px;
+            backdrop-filter: blur(5px);
         }
-        .slots-grid {
+        .slot-machine {
+            background: linear-gradient(145deg, #2b0040, #150020);
+            border: 4px solid #ffd700;
+            border-radius: 25px;
+            padding: 15px;
+            box-shadow: 0 0 30px rgba(255, 0, 128, 0.5), inset 0 0 15px rgba(255, 215, 0, 0.2);
+            width: 100%;
+            max-width: 340px;
+        }
+        .grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 10px;
-            background-color: #1e293b;
-            padding: 15px;
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.7);
-            border: 3px solid #f59e0b;
+            background: #0d001a;
+            padding: 12px;
+            border-radius: 18px;
+            border: 2px solid rgba(255, 215, 0, 0.4);
         }
-        .slot {
-            width: 70px;
+        .cell {
+            background: linear-gradient(180deg, #220033 0%, #11001a 100%);
+            border: 2px solid #550080;
+            border-radius: 12px;
             height: 80px;
-            background-color: #0f172a;
-            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 40px;
-            border: 2px solid #334155;
+            box-shadow: inset 0 0 10px #000;
+            transition: transform 0.1s, border-color 0.2s;
         }
-        .controls {
+        .cell.win {
+            border-color: #00ffcc;
+            box-shadow: 0 0 15px #00ffcc;
+            animation: pulse 0.5s infinite alternate;
+        }
+        @keyframes pulse {
+            from { transform: scale(1); }
+            to { transform: scale(1.08); }
+        }
+        .msg {
+            height: 25px;
+            margin: 15px 0;
+            font-weight: bold;
+            font-size: 16px;
+            color: #ff4444;
+        }
+        .actions {
             display: flex;
             gap: 10px;
-            margin-top: 20px;
+            width: 100%;
+            max-width: 340px;
         }
-        .spin-btn {
-            padding: 12px 30px;
-            font-size: 20px;
-            font-weight: bold;
-            color: #ffffff;
-            background: linear-gradient(135deg, #10b981, #059669);
-            border: none;
-            border-radius: 30px;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
-        }
-        .buy-btn {
-            padding: 12px 20px;
-            font-size: 16px;
-            font-weight: bold;
-            color: #ffffff;
-            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-            border: none;
-            border-radius: 30px;
-            cursor: pointer;
-        }
-        #message {
-            margin-top: 15px;
+        .btn {
+            flex: 1;
+            padding: 15px;
             font-size: 18px;
-            font-weight: bold;
-            height: 25px;
+            font-weight: 800;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            text-transform: uppercase;
+            box-shadow: 0 5px 0 rgba(0,0,0,0.4);
+            transition: all 0.1s;
+        }
+        .btn:active {
+            transform: translateY(3px);
+            box-shadow: 0 2px 0 rgba(0,0,0,0.4);
+        }
+        .btn-spin {
+            background: linear-gradient(180deg, #00e676 0%, #00897b 100%);
+            color: #fff;
+            text-shadow: 0 1px 2px #000;
+        }
+        .btn-buy {
+            background: linear-gradient(180deg, #2979ff 0%, #1565c0 100%);
+            color: #fff;
+            text-shadow: 0 1px 2px #000;
         }
     </style>
 </head>
 <body>
 
-    <h1>🎰 Mega 9-Slots 🎰</h1>
-
-    <div class="balance-box">
-        Մնացորդ: <span id="balance" style="color: #f59e0b;">100</span> 🪙
+    <div class="header-title">🎰 Mega 9-Slots 🎰</div>
+    
+    <div class="balance-card">
+        Մնացորդ: <span id="balance" style="color: #ffd700;">100</span> 🪙
     </div>
 
-    <div class="slots-grid">
-        <div class="slot" id="s1">🍒</div>
-        <div class="slot" id="s2">🍋</div>
-        <div class="slot" id="s3">🍇</div>
-        <div class="slot" id="s4">🍉</div>
-        <div class="slot" id="s5">7️⃣</div>
-        <div class="slot" id="s6">💎</div>
-        <div class="slot" id="s7">🔔</div>
-        <div class="slot" id="s8">👑</div>
-        <div class="slot" id="s9">🍀</div>
+    <div class="slot-machine">
+        <div class="grid" id="grid">
+            <div class="cell">👑</div>
+            <div class="cell">💎</div>
+            <div class="cell">7️⃣</div>
+            <div class="cell">🍒</div>
+            <div class="cell">🍉</div>
+            <div class="cell">💎</div>
+            <div class="cell">🍀</div>
+            <div class="cell">🔔</div>
+            <div class="cell">🍉</div>
+        </div>
     </div>
 
-    <div id="message"></div>
+    <div class="msg" id="msg"></div>
 
-    <div class="controls">
-        <button class="spin-btn" id="spinBtn" onclick="spin()">SPIN (-20 🪙)</button>
-        <button class="buy-btn" onclick="buyCoins()">+ Գնել 🪙</button>
+    <div class="actions">
+        <button class="btn btn-spin" onclick="spin()">SPIN (-20 🪙)</button>
+        <button class="btn btn-buy" onclick="addCoins()">+ Գնել 🪙</button>
     </div>
 
-    <script>
-        const symbols = ['🍒', '🍋', '🍇', '🍉', '7️⃣', '💎', '🔔', '👑', '🍀'];
-        let balance = 100;
-        const spinCost = 20;
+<script>
+    const symbols = ['👑', '💎', '7️⃣', '🍒', '🍉', '🍀', '🔔'];
+    let balance = 100;
+    const bet = 20;
 
-        function spin() {
-            const message = document.getElementById('message');
-            if (balance < spinCost) {
-                message.style.color = '#ef4444';
-                message.innerText = '❌ Միավորները չեն հերիքում:';
-                return;
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+    function playSound(type) {
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        if (type === 'spin') {
+            osc.frequency.setValueAtTime(180, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(400, audioCtx.currentTime + 0.08);
+            gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.08);
+        } else if (type === 'win') {
+            [300, 400, 500, 700].forEach((freq, i) => {
+                const o = audioCtx.createOscillator();
+                const g = audioCtx.createGain();
+                o.connect(g);
+                g.connect(audioCtx.destination);
+                o.frequency.setValueAtTime(freq, audioCtx.currentTime + i * 0.1);
+                g.gain.setValueAtTime(0.15, audioCtx.currentTime + i * 0.1);
+                o.start(audioCtx.currentTime + i * 0.1);
+                o.stop(audioCtx.currentTime + i * 0.1 + 0.2);
+            });
+        }
+    }
+
+    function addCoins() {
+        balance += 100;
+        document.getElementById('balance').innerText = balance;
+        document.getElementById('msg').style.color = '#00ffcc';
+        document.getElementById('msg').innerText = '✅ +100 միավոր ավելացվեց!';
+    }
+
+    function spin() {
+        const msg = document.getElementById('msg');
+        if (balance < bet) {
+            msg.style.color = '#ff4444';
+            msg.innerText = '❌ Միավորները չեն հերիքում:';
+            return;
+        }
+
+        balance -= bet;
+        document.getElementById('balance').innerText = balance;
+        msg.innerText = '';
+
+        const cells = document.querySelectorAll('.cell');
+        cells.forEach(c => c.classList.remove('win'));
+
+        let spins = 0;
+        const interval = setInterval(() => {
+            spins++;
+            playSound('spin');
+            cells.forEach(cell => {
+                cell.innerText = symbols[Math.floor(Math.random() * symbols.length)];
+            });
+
+            if (spins > 12) {
+                clearInterval(interval);
+                checkWins(cells);
             }
+        }, 80);
+    }
 
-            balance -= spinCost;
+    function checkWins(cells) {
+        const grid = Array.from(cells).map(c => c.innerText);
+        const lines = [
+            [0,1,2], [3,4,5], [6,7,8], // Հորիզոնական
+            [0,3,6], [1,4,7], [2,5,8], // Ուղղահայաց
+            [0,4,8], [2,4,6]          // Անկյունագծային
+        ];
+
+        let totalWin = 0;
+
+        lines.forEach(line => {
+            const [a, b, c] = line;
+            if (grid[a] === grid[b] && grid[b] === grid[c]) {
+                totalWin += 100;
+                cells[a].classList.add('win');
+                cells[b].classList.add('win');
+                cells[c].classList.add('win');
+            }
+        });
+
+        if (totalWin > 0) {
+            balance += totalWin;
             document.getElementById('balance').innerText = balance;
-            message.innerText = '';
-
-            let count = 0;
-            const interval = setInterval(() => {
-                for (let i = 1; i <= 9; i++) {
-                    document.getElementById('s' + i).innerText = symbols[Math.floor(Math.random() * symbols.length)];
-                }
-                count++;
-                if (count > 10) {
-                    clearInterval(interval);
-                }
-            }, 80);
+            document.getElementById('msg').style.color = '#ffd700';
+            document.getElementById('msg').innerText = `🎉 Դուք շահեցիք ${totalWin} 🪙!`;
+            playSound('win');
         }
-
-        function buyCoins() {
-            alert("Գնման համակարգը կմիացվի սերվերի հետ:");
-        }
-    </script>
-
+    }
+</script>
 </body>
 </html>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Burning Hot - PRO v110</title>
+    <title>Burning Hot - Crypto Payout PRO</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         :root {
@@ -207,10 +207,10 @@
             border-radius: 8px;
             text-align: center;
             width: 85%;
-            max-width: 270px;
+            max-width: 280px;
         }
 
-        .modal-content h3 { color: var(--gold); margin-bottom: 6px; font-size: 12px; }
+        .modal-content h3 { color: var(--gold); margin-bottom: 6px; font-size: 11px; }
         .modal-content p { font-size: 8px; color: #ccc; margin-bottom: 6px; }
 
         .option-input {
@@ -220,7 +220,7 @@
             border: 1px solid var(--gold);
             color: #fff;
             border-radius: 4px;
-            font-size: 11px;
+            font-size: 10px;
             text-align: center;
             margin-bottom: 5px;
             outline: none;
@@ -231,12 +231,22 @@
             border: 1px solid var(--gold);
             color: #fff;
             padding: 6px;
-            margin: 2px 0;
+            margin: 3px 0;
             border-radius: 4px;
             width: 100%;
             cursor: pointer;
             font-weight: bold;
             font-size: 10px;
+        }
+
+        .stars-btn {
+            background: linear-gradient(135deg, #ffd700, #ff8c00);
+            color: #000;
+        }
+
+        .crypto-btn {
+            background: linear-gradient(135deg, #0088cc, #004466);
+            color: #fff;
         }
 
         .close-modal {
@@ -316,20 +326,21 @@
 
     <div class="modal" id="topUpModal">
         <div class="modal-content">
-            <h3>ԴԵՊՈԶԻՏ (ԳՈՒՄԱՐԻ ՀԱՄԱԼՐՈՒՄ)</h3>
-            <p>Ընտրեք կամ մուտքագրեք գումարը</p>
-            <input type="number" id="topUpInput" class="option-input" value="1000" />
-            <button class="option-btn" onclick="customTopUp()">Ավելացնել բալանսին (Թեստային)</button>
-            <button class="option-btn" style="background: linear-gradient(135deg, #ffd700, #ff8c00); color: #000;" onclick="openPaymentInvoice()">💳 Վճարել Քարտով (Ammer Pay)</button>
+            <h3>ԴԵՊՈԶԻՏ / ՀԱՄԱԼՐՈՒՄ</h3>
+            <p>Ընտրեք համալրման եղանակը</p>
+            <button class="option-btn stars-btn" onclick="buyWithTelegramStars()">⭐ Գնել աստղերով (Telegram Stars)</button>
+            <button class="option-btn" onclick="customTopUpTest()">🧪 Թեստային ավելացում (Անվճար)</button>
             <button class="close-modal" onclick="closeModal('topUpModal')">Փակել</button>
         </div>
     </div>
 
     <div class="modal" id="cashoutModal">
         <div class="modal-content">
-            <h3>ԿԱՆԽԻԿԱՑՈՒՄ</h3>
-            <input type="number" id="cashoutInput" class="option-input" value="500" />
-            <button class="option-btn" onclick="customCashout()">Հանել</button>
+            <h3>ԿԱՆԽԻԿԱՑՈՒՄ (Crypto Payout)</h3>
+            <p>Մուտքագրեք գումարը և TON/USDT դրամապանակը</p>
+            <input type="number" id="cashoutAmount" class="option-input" placeholder="Գումարը" value="500" />
+            <input type="text" id="walletAddress" class="option-input" placeholder="Tonkeeper / Crypto Address" />
+            <button class="option-btn crypto-btn" onclick="requestCryptoPayout()">🚀 Ուղարկել կանխիկացման հայտ</button>
             <button class="close-modal" onclick="closeModal('cashoutModal')">Փակել</button>
         </div>
     </div>
@@ -410,7 +421,7 @@
         function startSpin() {
             initAudio();
             if (balance < currentBet) {
-                alert('Բալանսը բավարար չէ։ Խնդրում ենք համալրել դեպոզիտը:');
+                alert('Բալանսը բավարար չէ։ Համալրեք դեպոզիտը:');
                 return;
             }
 
@@ -513,16 +524,39 @@
         function openModal(id) { document.getElementById(id).style.display = 'flex'; }
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
-        function customTopUp() {
-            let val = parseInt(document.getElementById('topUpInput').value) || 0;
-            balance += val;
+        function buyWithTelegramStars() {
+            if (tg && tg.openInvoice) {
+                alert('Telegram Stars-ով վճարման համար անհրաժեշտ է բոտի կողմից ստեղծված ինվոյսի հղումը (Invoice Link):');
+            } else {
+                alert('Խնդրում ենք բացել խաղը Telegram բոտի ներսից՝ աստղերով գնում կատարելու համար։');
+            }
+            closeModal('topUpModal');
+        }
+
+        function customTopUpTest() {
+            balance += 1000;
             updateUI();
             closeModal('topUpModal');
         }
 
----
+        function requestCryptoPayout() {
+            let val = parseInt(document.getElementById('cashoutAmount').value) || 0;
+            let wallet = document.getElementById('walletAddress').value.trim();
 
-### Քայլ 2. Թարմացրեք հղումը BotFather-ում
-1. Պահպանեք փոփոխությունները GitHub-ում։
-2. Մտեք BotFather և ուղարկեք վեբ-հավելվածի նոր հղումը **`?v=110`** վերջածանցով (օրինակ՝ `https://yourusername.github.io/repo/?v=110`), որպեսզի Telegram-ը բացի նորացված խաղը։
-        
+            if (val <= 0 || val > balance) {
+                alert('Գումարը սխալ է կամ բավարար չէ։');
+                return;
+            }
+            if (!wallet) {
+                alert('Խնդրում ենք մուտքագրել դրամապանակի հասցեն։');
+                return;
+            }
+
+            balance -= val;
+            updateUI();
+            closeModal('cashoutModal');
+            alert('Կանխիկացման հայտը հաջողությամբ ուղարկվեց։ Գումարը կփոխանցվի նշված դրամապանակին ստուգումից հետո։');
+        }
+    </script>
+</body>
+</html>

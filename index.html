@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Burning Hot - PRO v100</title>
+    <title>Burning Hot - PRO v103</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         :root {
-            --bg-color: #020d04;
+            --bg-color: #072a0e;
             --panel-bg: #051808;
             --gold: #f4c430;
             --gold-light: #ffea9f;
@@ -24,27 +24,27 @@
         }
 
         body {
-            background: #072a0e;
+            background: var(--bg-color);
             color: var(--text-color);
-            min-height: 100vh;
+            height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: space-between;
-            padding: 6px;
+            justify-content: space-evenly;
+            padding: 4px;
             overflow: hidden;
         }
 
         .jackpot-panel {
             width: 100%;
-            max-width: 380px;
+            max-width: 360px;
             background: #0c2d12;
             border: 2px solid var(--gold);
             border-radius: 6px;
-            padding: 4px;
+            padding: 3px;
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 3px;
+            gap: 2px;
             text-align: center;
         }
 
@@ -60,14 +60,14 @@
 
         header {
             width: 100%;
-            max-width: 380px;
+            max-width: 360px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             background: var(--panel-bg);
             border: 2px solid var(--gold);
             border-radius: 6px;
-            padding: 6px;
+            padding: 5px 8px;
             gap: 4px;
         }
 
@@ -84,8 +84,8 @@
             background: linear-gradient(135deg, #ffcc00, #ff8800);
             border: 1px solid #fff;
             border-radius: 4px;
-            padding: 5px 8px;
-            font-size: 9px;
+            padding: 5px 7px;
+            font-size: 8px;
             font-weight: bold;
             color: #000;
             cursor: pointer;
@@ -99,10 +99,10 @@
         .slot-container {
             background: #010602;
             border: 3px solid var(--gold);
-            border-radius: 10px;
-            padding: 6px;
+            border-radius: 8px;
+            padding: 5px;
             width: 100%;
-            max-width: 380px;
+            max-width: 360px;
         }
 
         .grid-5x3 {
@@ -115,28 +115,41 @@
             background: #ffffff;
             border: 2px solid #b8860b;
             border-radius: 5px;
-            height: 60px;
+            height: 52px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 26px;
+            font-size: 24px;
+        }
+
+        /* Առանձին ոճ 7-նյակի համար (կապույտ ֆոնով, սպիտակ փայլուն տեքստով) */
+        .reel-cell.seven-symbol {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: #ffffff;
+            font-weight: 900;
+            text-shadow: 0 0 5px #00d2ff, 0 0 10px #00d2ff;
+            border-color: #00d2ff;
         }
 
         .reel-cell.winning {
-            background: #ffcc00;
+            background: #ffcc00 !important;
+            color: #000 !important;
             border-color: #ff0000;
+            text-shadow: none;
+            transform: scale(1.05);
+            transition: 0.2s;
         }
 
         .controls-panel {
             width: 100%;
-            max-width: 380px;
+            max-width: 360px;
             background: var(--panel-bg);
             border: 2px solid var(--gold);
             border-radius: 8px;
-            padding: 6px;
+            padding: 5px;
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 5px;
         }
 
         .bets-row {
@@ -149,7 +162,7 @@
             background: #051808;
             border: 1px solid var(--gold);
             color: var(--gold);
-            padding: 6px 0;
+            padding: 5px 0;
             border-radius: 3px;
             font-size: 9px;
             font-weight: bold;
@@ -164,19 +177,18 @@
 
         .spin-btn {
             width: 100%;
-            height: 42px;
-            border-radius: 21px;
+            height: 38px;
+            border-radius: 19px;
             background: linear-gradient(145deg, #d32f2f, #8b0000);
             border: 2px solid var(--gold);
             color: #fff;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: bold;
             cursor: pointer;
         }
 
-        .spin-btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
+        .spin-btn.stop-mode {
+            background: linear-gradient(145deg, #ff8c00, #ff4500);
         }
 
         .modal {
@@ -192,26 +204,26 @@
         .modal-content {
             background: var(--panel-bg);
             border: 2px solid var(--gold);
-            padding: 16px;
+            padding: 14px;
             border-radius: 8px;
             text-align: center;
             width: 85%;
-            max-width: 280px;
+            max-width: 270px;
         }
 
-        .modal-content h3 { color: var(--gold); margin-bottom: 8px; font-size: 13px; }
-        .modal-content p { font-size: 9px; color: #ccc; margin-bottom: 8px; }
+        .modal-content h3 { color: var(--gold); margin-bottom: 6px; font-size: 12px; }
+        .modal-content p { font-size: 8px; color: #ccc; margin-bottom: 6px; }
 
         .option-input {
             width: 100%;
-            padding: 7px;
+            padding: 6px;
             background: #010602;
             border: 1px solid var(--gold);
             color: #fff;
             border-radius: 4px;
-            font-size: 12px;
+            font-size: 11px;
             text-align: center;
-            margin-bottom: 6px;
+            margin-bottom: 5px;
             outline: none;
         }
 
@@ -219,13 +231,13 @@
             background: #051808;
             border: 1px solid var(--gold);
             color: #fff;
-            padding: 7px;
-            margin: 3px 0;
+            padding: 6px;
+            margin: 2px 0;
             border-radius: 4px;
             width: 100%;
             cursor: pointer;
             font-weight: bold;
-            font-size: 11px;
+            font-size: 10px;
         }
 
         .option-btn:hover {
@@ -234,14 +246,14 @@
         }
 
         .close-modal {
-            margin-top: 6px;
+            margin-top: 5px;
             background: #444;
             color: #fff;
             border: none;
             padding: 4px 8px;
             border-radius: 3px;
             cursor: pointer;
-            font-size: 10px;
+            font-size: 9px;
         }
     </style>
 </head>
@@ -276,23 +288,23 @@
 
     <div class="slot-container">
         <div class="grid-5x3" id="slotGrid">
-            <div class="reel-cell" data-col="0" data-row="0">🍇</div>
-            <div class="reel-cell" data-col="1" data-row="0">☘️</div>
-            <div class="reel-cell" data-col="2" data-row="0">🍊</div>
-            <div class="reel-cell" data-col="3" data-row="0">🔔</div>
-            <div class="reel-cell" data-col="4" data-row="0">7️⃣</div>
+            <div class="reel-cell" data-index="0">🍇</div>
+            <div class="reel-cell" data-index="1">☘️</div>
+            <div class="reel-cell" data-index="2">🍊</div>
+            <div class="reel-cell" data-index="3">🔔</div>
+            <div class="reel-cell seven-symbol" data-index="4">7</div>
 
-            <div class="reel-cell" data-col="0" data-row="1">🍉</div>
-            <div class="reel-cell" data-col="1" data-row="1">☘️</div>
-            <div class="reel-cell" data-col="2" data-row="1">🍊</div>
-            <div class="reel-cell" data-col="3" data-row="1">🍉</div>
-            <div class="reel-cell" data-col="4" data-row="1">🍇</div>
+            <div class="reel-cell" data-index="5">🍉</div>
+            <div class="reel-cell" data-index="6">☘️</div>
+            <div class="reel-cell" data-index="7">🍊</div>
+            <div class="reel-cell" data-index="8">🍉</div>
+            <div class="reel-cell" data-index="9">🍇</div>
 
-            <div class="reel-cell" data-col="0" data-row="2">🍇</div>
-            <div class="reel-cell" data-col="1" data-row="2">☘️</div>
-            <div class="reel-cell" data-col="2" data-row="2">🍇</div>
-            <div class="reel-cell" data-col="3" data-row="2">🍑</div>
-            <div class="reel-cell" data-col="4" data-row="2">🔔</div>
+            <div class="reel-cell" data-index="10">🍇</div>
+            <div class="reel-cell" data-index="11">☘️</div>
+            <div class="reel-cell seven-symbol" data-index="12">7</div>
+            <div class="reel-cell" data-index="13">🍑</div>
+            <div class="reel-cell" data-index="14">🔔</div>
         </div>
     </div>
 
@@ -304,7 +316,7 @@
             <button class="bet-btn" onclick="setBet(80, this)">80 ֏</button>
             <button class="bet-btn" onclick="setBet(100, this)">100 ֏</button>
         </div>
-        <button class="spin-btn" id="spinBtn" onclick="startSpin()">ՊՏՏԵԼ</button>
+        <button class="spin-btn" id="spinBtn" onclick="handleSpinButton()">ՊՏՏԵԼ</button>
     </div>
 
     <!-- Դեպոզիտի Մոդալ -->
@@ -333,13 +345,14 @@
     </div>
 
     <script>
-        const symbols = ['🍇', '🍉', '🍊', '🍑', '🍋', '🔔', '7️⃣', '☘️'];
+        const symbols = ['🍇', '🍉', '🍊', '🍑', '🍋', '🔔', '7', '☘️'];
         let balance = 1000;
         let currentBet = 20;
         let currentWin = 0;
         let isSpinning = false;
+        let spinInterval = null;
+        let spinTimeout = null;
 
-        // Web Audio API ձայների համար
         let audioCtx = null;
         function initAudio() {
             if (!audioCtx) {
@@ -396,8 +409,15 @@
             btn.classList.add('active');
         }
 
+        function handleSpinButton() {
+            if (!isSpinning) {
+                startSpin();
+            } else {
+                stopSpinImmediately();
+            }
+        }
+
         function startSpin() {
-            if (isSpinning) return;
             initAudio();
             if (balance < currentBet) {
                 alert('Բալանսը բավարար չէ խաղադրույքի համար։');
@@ -409,47 +429,94 @@
             currentWin = 0;
             updateUI();
             
-            document.querySelectorAll('.reel-cell').forEach(c => c.classList.remove('winning'));
+            document.querySelectorAll('.reel-cell').forEach(c => {
+                c.classList.remove('winning', 'seven-symbol');
+            });
 
             isSpinning = true;
             const spinBtn = document.getElementById('spinBtn');
-            spinBtn.disabled = true;
-            spinBtn.innerText = 'ՊՏՏՎՈՒՄ Է...';
+            spinBtn.innerText = '🛑 ԿԱՆԳՆԵՑՆԵԼ';
+            spinBtn.classList.add('stop-mode');
 
             let cells = document.querySelectorAll('.reel-cell');
             
-            let interval = setInterval(() => {
+            spinInterval = setInterval(() => {
                 cells.forEach(c => {
-                    c.innerText = symbols[Math.floor(Math.random() * symbols.length)];
+                    let sym = symbols[Math.floor(Math.random() * symbols.length)];
+                    c.innerText = sym;
+                    if (sym === '7') {
+                        c.classList.add('seven-symbol');
+                    } else {
+                        c.classList.remove('seven-symbol');
+                    }
                     playSound('spinTick');
                 });
             }, 70);
 
-            setTimeout(() => {
-                clearInterval(interval);
-                
-                let finalSymbols = [];
-                cells.forEach(c => {
+            spinTimeout = setTimeout(() => {
+                if (isSpinning) finishSpin();
+            }, 3000);
+        }
+
+        function stopSpinImmediately() {
+            if (!isSpinning) return;
+            clearTimeout(spinTimeout);
+            finishSpin();
+        }
+
+        function finishSpin() {
+            clearInterval(spinInterval);
+            isSpinning = false;
+
+            const spinBtn = document.getElementById('spinBtn');
+            spinBtn.innerText = 'ՊՏՏԵԼ';
+            spinBtn.classList.remove('stop-mode');
+
+            let cells = document.querySelectorAll('.reel-cell');
+            let grid = [];
+            for(let i=0; i<3; i++) {
+                grid[i] = [];
+                for(let j=0; j<5; j++) {
                     let sym = symbols[Math.floor(Math.random() * symbols.length)];
-                    c.innerText = sym;
-                    finalSymbols.push(sym);
-                });
+                    let idx = i * 5 + j;
+                    cells[idx].innerText = sym;
+                    
+                    if (sym === '7') {
+                        cells[idx].classList.add('seven-symbol');
+                    } else {
+                        cells[idx].classList.remove('seven-symbol');
+                    }
 
-                // Հաղթանակի ստուգում (միջին տող)
-                if (finalSymbols[5] === finalSymbols[6] && finalSymbols[6] === finalSymbols[7]) {
-                    currentWin = currentBet * 10;
-                    balance += currentWin;
-                    cells[5].classList.add('winning');
-                    cells[6].classList.add('winning');
-                    cells[7].classList.add('winning');
-                    playSound('win');
+                    grid[i][j] = { sym: sym, index: idx };
                 }
+            }
 
-                isSpinning = false;
-                spinBtn.disabled = false;
-                spinBtn.innerText = 'ՊՏՏԵԼ';
-                updateUI();
-            }, 1000);
+            let winningIndices = new Set();
+            let totalWinMultiplier = 0;
+
+            for(let i=0; i<3; i++) {
+                let s0 = grid[i][0].sym, s1 = grid[i][1].sym, s2 = grid[i][2].sym;
+                let s3 = grid[i][3].sym, s4 = grid[i][4].sym;
+                
+                if(s0 === s1 && s1 === s2) {
+                    let count = (s0 === s3) ? ((s0 === s4) ? 5 : 4) : 3;
+                    let mult = (s0 === '7') ? 20 : 10;
+                    totalWinMultiplier += mult * (count - 2);
+                    for(let c=0; c<count; c++) winningIndices.add(grid[i][c].index);
+                }
+            }
+
+            if(totalWinMultiplier > 0) {
+                currentWin = currentBet * totalWinMultiplier;
+                balance += currentWin;
+                winningIndices.forEach(idx => {
+                    cells[idx].classList.remove('seven-symbol');
+                    cells[idx].classList.add('winning');
+                });
+                playSound('win');
+            }
+
+            updateUI();
         }
 
         function openModal(id) {

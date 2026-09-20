@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Burning Hot - PRO v104</title>
+    <title>Burning Hot - PRO v105</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         :root {
@@ -122,7 +122,6 @@
             font-size: 24px;
         }
 
-        /* Դասական Կարմիր 7-նյակ */
         .reel-cell.seven-symbol {
             background: linear-gradient(135deg, #ff0000, #990000);
             color: #ffeb3b;
@@ -240,11 +239,6 @@
             font-size: 10px;
         }
 
-        .option-btn:hover {
-            background: var(--gold);
-            color: #000;
-        }
-
         .gamble-buttons {
             display: flex;
             gap: 10px;
@@ -285,10 +279,10 @@
     </script>
 
     <div class="jackpot-panel">
-        <div class="jp-box"><div class="jp-title" style="color: #ff5252;">SPADE</div><div class="jp-val" id="jpSpade">19,400 ֏</div></div>
-        <div class="jp-box"><div class="jp-title" style="color: #ff8a80;">HEART</div><div class="jp-val" id="jpHeart">13,200 ֏</div></div>
-        <div class="jp-box"><div class="jp-title" style="color: #40c4ff;">DIAM</div><div class="jp-val" id="jpDiamond">9,100 ֏</div></div>
-        <div class="jp-box"><div class="jp-title" style="color: #69f0ae;">CLUB</div><div class="jp-val" id="jpClub">5,000 ֏</div></div>
+        <div class="jp-box"><div class="jp-title" style="color: #ff5252;">SPADE</div><div class="jp-val">19,400 ֏</div></div>
+        <div class="jp-box"><div class="jp-title" style="color: #ff8a80;">HEART</div><div class="jp-val">13,200 ֏</div></div>
+        <div class="jp-box"><div class="jp-title" style="color: #40c4ff;">DIAM</div><div class="jp-val">9,100 ֏</div></div>
+        <div class="jp-box"><div class="jp-title" style="color: #69f0ae;">CLUB</div><div class="jp-val">5,000 ֏</div></div>
     </div>
 
     <header>
@@ -337,42 +331,33 @@
         <button class="spin-btn" id="spinBtn" onclick="handleSpinButton()">ՊՏՏԵԼ</button>
     </div>
 
-    <!-- Դեպոզիտի Մոդալ -->
     <div class="modal" id="topUpModal">
         <div class="modal-content">
-            <h3>ԴԵՊՈԶԻՏ (Նվազ. 100 ֏)</h3>
-            <p>Մուտքագրեք կամ ընտրեք գումարը</p>
-            <input type="number" id="topUpInput" class="option-input" value="1000" min="100" />
-            <button class="option-btn" onclick="customTopUp()">Համալրել նշվածը</button>
-            <button class="option-btn" onclick="topUpQuick(500)">+ 500 ֏</button>
-            <button class="option-btn" onclick="topUpQuick(1000)">+ 1,000 ֏</button>
+            <h3>ԴԵՊՈԶԻՏ</h3>
+            <input type="number" id="topUpInput" class="option-input" value="1000" />
+            <button class="option-btn" onclick="customTopUp()">Համալրել</button>
             <button class="close-modal" onclick="closeModal('topUpModal')">Փակել</button>
         </div>
     </div>
 
-    <!-- Կանխիկացման Մոդալ -->
     <div class="modal" id="cashoutModal">
         <div class="modal-content">
-            <h3>ԿԱՆԽԻԿԱՑՈՒՄ (Նվազ. 500 ֏)</h3>
-            <p>Մուտքագրեք հանվող գումարը</p>
-            <input type="number" id="cashoutInput" class="option-input" value="500" min="500" />
-            <button class="option-btn" onclick="customCashout()">Հանել նշված գումարը</button>
-            <button class="option-btn" onclick="cashoutAll()">Հանել ԱՄԲՈՂՋԸ</button>
+            <h3>ԿԱՆԽԻԿԱՑՈՒՄ</h3>
+            <input type="number" id="cashoutInput" class="option-input" value="500" />
+            <button class="option-btn" onclick="customCashout()">Հանել</button>
             <button class="close-modal" onclick="closeModal('cashoutModal')">Փակել</button>
         </div>
     </div>
 
-    <!-- Gamble (Ռիսկային Խաղ) Մոդալ -->
     <div class="modal" id="gambleModal">
         <div class="modal-content">
             <h3>GAMBLE - ԿՐԿՆԱՊԱՏԿՈՒՄ</h3>
-            <p>Գուշակեք քարտի գույնը՝ շահումը կրկնապատկելու համար[span_1](start_span)[span_1](end_span)</p>
-            <p style="font-size: 11px; color: var(--gold); margin: 8px 0;" id="gambleWinText">Շահում՝ 0 ֏</p>
+            <p id="gambleWinText">Շահում՝ 0 ֏</p>
             <div class="gamble-buttons">
-                <button class="gamble-btn red-card" onclick="playGamble('red')">❤️ ԿԱՐՄԻՐ</button>
-                <button class="gamble-btn black-card" onclick="playGamble('black')">♠️ ՍԵՎ</button>
+                <button class="gamble-btn red-card" onclick="playGamble('red')">ԿԱՐՄԻՐ</button>
+                <button class="gamble-btn black-card" onclick="playGamble('black')">ՍԵՎ</button>
             </div>
-            <button class="close-modal" style="margin-top: 10px; width: 100%; background: #2e7d32;" onclick="collectGamble()">ՎԵՐՑՆԵԼ ՇԱՀՈՒՄԸ</button>
+            <button class="close-modal" style="margin-top: 10px; width: 100%; background: #2e7d32;" onclick="collectGamble()">ՎԵՐՑՆԵԼ</button>
         </div>
     </div>
 
@@ -385,49 +370,6 @@
         let spinInterval = null;
         let spinTimeout = null;
 
-        let audioCtx = null;
-        function initAudio() {
-            if (!audioCtx) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            }
-            if (audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
-        }
-
-        function playSound(type) {
-            try {
-                initAudio();
-                if (!audioCtx) return;
-                const osc = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-                let now = audioCtx.currentTime;
-
-                if (type === 'click') {
-                    osc.frequency.setValueAtTime(400, now);
-                    gain.gain.setValueAtTime(0.02, now);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
-                    osc.start(now); osc.stop(now + 0.05);
-                } else if (type === 'spinTick') {
-                    osc.type = 'triangle';
-                    osc.frequency.setValueAtTime(300 + Math.random() * 100, now);
-                    gain.gain.setValueAtTime(0.015, now);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
-                    osc.start(now); osc.stop(now + 0.04);
-                } else if (type === 'win') {
-                    osc.type = 'square';
-                    osc.frequency.setValueAtTime(523.25, now);
-                    osc.frequency.setValueAtTime(659.25, now + 0.15);
-                    osc.frequency.setValueAtTime(783.99, now + 0.3);
-                    gain.gain.setValueAtTime(0.05, now);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.6);
-                    osc.start(now); osc.stop(now + 0.6);
-                }
-            } catch(e) {}
-        }
-
         function updateUI() {
             document.getElementById('balanceVal').innerText = balance + ' ֏';
             document.getElementById('winVal').innerText = currentWin + ' ֏';
@@ -435,7 +377,6 @@
 
         function setBet(amount, btn) {
             if (isSpinning) return;
-            playSound('click');
             currentBet = amount;
             document.querySelectorAll('.bet-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
@@ -450,13 +391,11 @@
         }
 
         function startSpin() {
-            initAudio();
             if (balance < currentBet) {
-                alert('Բալանսը բավարար չէ խաղադրույքի համար։');
+                alert('Բալանսը բավարար չէ։');
                 return;
             }
 
-            playSound('click');
             balance -= currentBet;
             currentWin = 0;
             updateUI();
@@ -481,13 +420,12 @@
                     } else {
                         c.classList.remove('seven-symbol');
                     }
-                    playSound('spinTick');
                 });
-            }, 70);
+            }, 60);
 
             spinTimeout = setTimeout(() => {
                 if (isSpinning) finishSpin();
-            }, 3000);
+            }, 2500);
         }
 
         function stopSpinImmediately() {
@@ -497,6 +435,7 @@
         }
 
         function finishSpin() {
+            if (!isSpinning) return;
             clearInterval(spinInterval);
             isSpinning = false;
 
@@ -518,7 +457,6 @@
                     } else {
                         cells[idx].classList.remove('seven-symbol');
                     }
-
                     grid[i][j] = { sym: sym, index: idx };
                 }
             }
@@ -544,30 +482,25 @@
                     cells[idx].classList.remove('seven-symbol');
                     cells[idx].classList.add('winning');
                 });
-                playSound('win');
                 updateUI();
-                
-                // Բացել Gamble պատուհանը շահելուց հետո
                 setTimeout(() => {
                     document.getElementById('gambleWinText').innerText = 'Շահում՝ ' + currentWin + ' ֏';
                     openModal('gambleModal');
-                }, 500);
+                }, 400);
             } else {
                 updateUI();
             }
         }
 
         function playGamble(choice) {
-            playSound('click');
             let actualColor = Math.random() < 0.5 ? 'red' : 'black';
             if (choice === actualColor) {
                 currentWin *= 2;
                 document.getElementById('gambleWinText').innerText = 'ՃԻՇՏ Է! Շահում՝ ' + currentWin + ' ֏';
-                playSound('win');
             } else {
                 currentWin = 0;
                 updateUI();
-                alert('Ցավոք սրտի, չգուշակեցիք։ Շահումն այրվեց։');
+                alert('Չգուշակեցիք։');
                 closeModal('gambleModal');
             }
         }
@@ -579,5 +512,29 @@
             closeModal('gambleModal');
         }
 
-        function openModal(id) {
-            document.getElementById(id).style.display = 'flex'
+        function openModal(id) { document.getElementById(id).style.display = 'flex'; }
+        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+
+        function customTopUp() {
+            let val = parseInt(document.getElementById('topUpInput').value) || 0;
+            balance += val;
+            updateUI();
+            closeModal('topUpModal');
+        }
+
+        function customCashout() {
+            let val = parseInt(document.getElementById('cashoutInput').value) || 0;
+            if (val <= balance) {
+                balance -= val;
+                updateUI();
+            } else {
+                alert('Բալանսը չի բավարարում։');
+            }
+            closeModal('cashoutModal');
+        }
+
+        updateUI();
+    </script>
+</body>
+</html>
+

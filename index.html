@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Burning Hot - PRO v107</title>
+    <title>Burning Hot - PRO v110</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         :root {
@@ -254,9 +254,10 @@
 <body>
 
     <script>
-        if (window.Telegram && window.Telegram.WebApp) {
-            window.Telegram.WebApp.ready();
-            window.Telegram.WebApp.expand();
+        let tg = window.Telegram && window.Telegram.WebApp ? window.Telegram.WebApp : null;
+        if (tg) {
+            tg.ready();
+            tg.expand();
         }
     </script>
 
@@ -315,9 +316,11 @@
 
     <div class="modal" id="topUpModal">
         <div class="modal-content">
-            <h3>ԴԵՊՈԶԻՏ</h3>
+            <h3>ԴԵՊՈԶԻՏ (ԳՈՒՄԱՐԻ ՀԱՄԱԼՐՈՒՄ)</h3>
+            <p>Ընտրեք կամ մուտքագրեք գումարը</p>
             <input type="number" id="topUpInput" class="option-input" value="1000" />
-            <button class="option-btn" onclick="customTopUp()">Համալրել</button>
+            <button class="option-btn" onclick="customTopUp()">Ավելացնել բալանսին (Թեստային)</button>
+            <button class="option-btn" style="background: linear-gradient(135deg, #ffd700, #ff8c00); color: #000;" onclick="openPaymentInvoice()">💳 Վճարել Քարտով (Ammer Pay)</button>
             <button class="close-modal" onclick="closeModal('topUpModal')">Փակել</button>
         </div>
     </div>
@@ -407,7 +410,7 @@
         function startSpin() {
             initAudio();
             if (balance < currentBet) {
-                alert('Բալանսը բավարար չէ։');
+                alert('Բալանսը բավարար չէ։ Խնդրում ենք համալրել դեպոզիտը:');
                 return;
             }
 
@@ -470,7 +473,7 @@
                     cells[idx].innerText = sym;
                     
                     if (sym === '7') {
-                        cells.getElementById ? null : cells[idx].classList.add('seven-symbol');
+                        cells[idx].classList.add('seven-symbol');
                     } else {
                         cells[idx].classList.remove('seven-symbol');
                     }
@@ -517,18 +520,9 @@
             closeModal('topUpModal');
         }
 
-        function customCashout() {
-            let val = parseInt(document.getElementById('cashoutInput').value) || 0;
-            if (val <= balance) {
-                balance -= val;
-                updateUI();
-            } else {
-                alert('Բալանսը չի բավարարում։');
-            }
-            closeModal('cashoutModal');
-        }
+---
 
-        updateUI();
-    </script>
-</body>
-</html>
+### Քայլ 2. Թարմացրեք հղումը BotFather-ում
+1. Պահպանեք փոփոխությունները GitHub-ում։
+2. Մտեք BotFather և ուղարկեք վեբ-հավելվածի նոր հղումը **`?v=110`** վերջածանցով (օրինակ՝ `https://yourusername.github.io/repo/?v=110`), որպեսզի Telegram-ը բացի նորացված խաղը։
+        

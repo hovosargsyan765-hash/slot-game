@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Burning Hot PRO - Jackpot & Cashout</title>
+    <title>Burning Hot PRO - Adjarabet Style</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         :root {
-            --bg-color: #051c09;
-            --panel-bg: #0b2e12;
-            --gold: #f3c653;
+            --bg-color: #031407;
+            --panel-bg: #07220e;
+            --gold: #ffd700;
             --gold-light: #ffea9f;
             --text-color: #ffffff;
         }
@@ -24,14 +24,14 @@
         }
 
         body {
-            background: radial-gradient(circle at center, #0f4019 0%, var(--bg-color) 100%);
+            background: radial-gradient(circle at center, #0b3613 0%, var(--bg-color) 100%);
             color: var(--text-color);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: space-between;
-            padding: 8px;
+            padding: 6px;
             overflow: hidden;
         }
 
@@ -39,35 +39,37 @@
         .jackpot-panel {
             width: 100%;
             max-width: 360px;
-            background: linear-gradient(135deg, #113f1b, #071f0d);
+            background: linear-gradient(180deg, #123d1b, #05180a);
             border: 2px solid var(--gold);
-            border-radius: 10px;
-            padding: 6px;
+            border-radius: 8px;
+            padding: 4px;
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 4px;
+            gap: 3px;
             text-align: center;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.6);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.8), inset 0 1px 3px rgba(255,255,255,0.2);
         }
 
         .jp-box {
-            background: rgba(0,0,0,0.4);
-            border: 1px solid #b8860b;
-            border-radius: 6px;
-            padding: 3px;
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid #d4af37;
+            border-radius: 5px;
+            padding: 2px;
         }
 
         .jp-title {
-            font-size: 10px;
+            font-size: 9px;
             font-weight: bold;
+            letter-spacing: 0.5px;
         }
 
         .jp-val {
-            font-size: 11px;
+            font-size: 10px;
             color: var(--gold-light);
             font-weight: bold;
         }
 
+        /* Header / Balance Panel */
         header {
             width: 100%;
             max-width: 360px;
@@ -76,9 +78,9 @@
             align-items: center;
             background: var(--panel-bg);
             border: 2px solid var(--gold);
-            border-radius: 10px;
-            padding: 6px 10px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.6);
+            border-radius: 8px;
+            padding: 5px 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.8);
         }
 
         .balance-box, .win-box {
@@ -88,14 +90,14 @@
         }
 
         .label {
-            font-size: 8px;
+            font-size: 7px;
             color: var(--gold);
             text-transform: uppercase;
             font-weight: bold;
         }
 
         .value {
-            font-size: 13px;
+            font-size: 12px;
             font-weight: bold;
             color: var(--text-color);
         }
@@ -103,28 +105,28 @@
         .top-up-btn, .cashout-btn {
             background: linear-gradient(135deg, #ffcc00, #ff8800);
             border: 1px solid #fff;
-            border-radius: 6px;
-            padding: 5px 8px;
-            font-size: 11px;
+            border-radius: 5px;
+            padding: 4px 7px;
+            font-size: 10px;
             font-weight: bold;
             color: #000;
             cursor: pointer;
-            box-shadow: 0 2px 6px rgba(255, 153, 0, 0.6);
+            box-shadow: 0 2px 5px rgba(255, 153, 0, 0.6);
         }
 
         .cashout-btn {
-            background: linear-gradient(135deg, #4CAF50, #2E7D32);
+            background: linear-gradient(135deg, #2e7d32, #1b5e20);
             color: #fff;
         }
 
         /* Slot Machine Area */
         .slot-container {
             position: relative;
-            background: linear-gradient(180deg, #0d3815 0%, #030d05 100%);
-            border: 3px solid var(--gold);
-            border-radius: 14px;
-            padding: 10px;
-            box-shadow: 0 0 25px rgba(243, 198, 83, 0.4), inset 0 0 15px rgba(0,0,0,0.9);
+            background: linear-gradient(180deg, #0d3815 0%, #020a04 100%);
+            border: 4px solid var(--gold);
+            border-radius: 12px;
+            padding: 8px;
+            box-shadow: 0 0 30px rgba(243, 198, 83, 0.5), inset 0 0 20px rgba(0,0,0,0.95);
             width: 100%;
             max-width: 360px;
         }
@@ -132,30 +134,36 @@
         .grid-3x3 {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 6px;
+            gap: 5px;
         }
 
         .reel-cell {
-            background: radial-gradient(circle, #ffffff 0%, #dcdcdc 100%);
+            background: radial-gradient(circle, #ffffff 0%, #e6e6e6 100%);
             border: 2px solid #b8860b;
-            border-radius: 8px;
-            height: 80px;
+            border-radius: 6px;
+            height: 75px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 40px;
-            box-shadow: inset 0 3px 8px rgba(0,0,0,0.4);
+            font-size: 38px;
+            box-shadow: inset 0 3px 8px rgba(0,0,0,0.5);
+            transition: transform 0.1s ease;
+        }
+
+        .reel-cell.spinning {
+            filter: blur(1.5px);
+            transform: scale(0.97);
         }
 
         .reel-cell.winning {
-            background: radial-gradient(circle, #ffffa3 0%, #ffcc00 100%);
-            border-color: #ff3300;
-            animation: pulseWin 0.4s infinite alternate;
+            background: radial-gradient(circle, #fffacd 0%, #ffd700 100%);
+            border-color: #ff2200;
+            animation: pulseWin 0.35s infinite alternate;
         }
 
         @keyframes pulseWin {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.05); }
+            0% { transform: scale(1); box-shadow: 0 0 10px #ff0000; }
+            100% { transform: scale(1.06); box-shadow: 0 0 20px #ffcc00; }
         }
 
         /* Controls Panel */
@@ -164,28 +172,28 @@
             max-width: 360px;
             background: var(--panel-bg);
             border: 2px solid var(--gold);
-            border-radius: 12px;
-            padding: 10px;
+            border-radius: 10px;
+            padding: 8px;
             display: flex;
             flex-direction: column;
-            gap: 8px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.6);
+            gap: 6px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.8);
         }
 
         .bets-row {
             display: flex;
             justify-content: space-between;
-            gap: 4px;
+            gap: 3px;
         }
 
         .bet-btn {
             flex: 1;
-            background: #113f1b;
+            background: #0b2e12;
             border: 1px solid var(--gold);
             color: var(--gold);
-            padding: 5px 0;
-            border-radius: 5px;
-            font-size: 11px;
+            padding: 4px 0;
+            border-radius: 4px;
+            font-size: 10px;
             font-weight: bold;
             cursor: pointer;
         }
@@ -202,25 +210,25 @@
         }
 
         .spin-btn {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background: linear-gradient(145deg, #ff3333, #880000);
-            border: 3px solid var(--gold);
+            width: 100%;
+            max-width: 220px;
+            height: 48px;
+            border-radius: 24px;
+            background: linear-gradient(145deg, #d32f2f, #8b0000);
+            border: 2px solid var(--gold);
             color: #fff;
-            font-size: 14px;
+            font-size: 15px;
             font-weight: bold;
             text-transform: uppercase;
             cursor: pointer;
-            box-shadow: 0 5px 15px rgba(211, 47, 47, 0.7);
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            box-shadow: 0 4px 12px rgba(211, 47, 47, 0.7);
             outline: none;
+            letter-spacing: 1px;
         }
 
         .spin-btn.stop-state {
-            background: linear-gradient(145deg, #ff9900, #b35900);
+            background: linear-gradient(145deg, #f57c00, #e65100);
+            box-shadow: 0 4px 12px rgba(245, 124, 0, 0.7);
         }
 
         /* Modals */
@@ -237,30 +245,30 @@
         .modal-content {
             background: var(--panel-bg);
             border: 2px solid var(--gold);
-            padding: 18px;
-            border-radius: 12px;
+            padding: 16px;
+            border-radius: 10px;
             text-align: center;
             width: 85%;
-            max-width: 300px;
+            max-width: 280px;
         }
 
         .modal-content h3 {
             color: var(--gold);
-            margin-bottom: 10px;
-            font-size: 15px;
+            margin-bottom: 8px;
+            font-size: 14px;
         }
 
         .option-btn {
-            background: #113f1b;
+            background: #0b2e12;
             border: 1px solid var(--gold);
             color: #fff;
-            padding: 8px;
-            margin: 5px 0;
-            border-radius: 6px;
+            padding: 7px;
+            margin: 4px 0;
+            border-radius: 5px;
             width: 100%;
             cursor: pointer;
             font-weight: bold;
-            font-size: 13px;
+            font-size: 12px;
         }
 
         .option-btn:hover {
@@ -269,13 +277,14 @@
         }
 
         .close-modal {
-            margin-top: 10px;
-            background: #555;
+            margin-top: 8px;
+            background: #444;
             color: #fff;
             border: none;
-            padding: 5px 12px;
-            border-radius: 5px;
+            padding: 4px 10px;
+            border-radius: 4px;
             cursor: pointer;
+            font-size: 11px;
         }
     </style>
 </head>
@@ -283,10 +292,10 @@
 
     <!-- Jackpot Panel -->
     <div class="jackpot-panel">
-        <div class="jp-box"><div class="jp-title" style="color: #b71c1c;">♠ SPADE</div><div class="jp-val" id="jpSpade">12,450 ֏</div></div>
-        <div class="jp-box"><div class="jp-title" style="color: #d32f2f;">♥ HEART</div><div class="jp-val" id="jpHeart">8,320 ֏</div></div>
-        <div class="jp-box"><div class="jp-title" style="color: #1976D2;">♦ DIAM</div><div class="jp-val" id="jpDiamond">5,100 ֏</div></div>
-        <div class="jp-box"><div class="jp-title" style="color: #388E3C;">♣ CLUB</div><div class="jp-val" id="jpClub">2,900 ֏</div></div>
+        <div class="jp-box"><div class="jp-title" style="color: #ff5252;">♠ SPADE</div><div class="jp-val" id="jpSpade">14,250 ֏</div></div>
+        <div class="jp-box"><div class="jp-title" style="color: #ff8a80;">♥ HEART</div><div class="jp-val" id="jpHeart">9,810 ֏</div></div>
+        <div class="jp-box"><div class="jp-title" style="color: #40c4ff;">♦ DIAM</div><div class="jp-val" id="jpDiamond">6,400 ֏</div></div>
+        <div class="jp-box"><div class="jp-title" style="color: #69f0ae;">♣ CLUB</div><div class="jp-val" id="jpClub">3,150 ֏</div></div>
     </div>
 
     <header>
@@ -344,7 +353,7 @@
     <div class="modal" id="cashoutModal">
         <div class="modal-content">
             <h3>ԿԱՆԽԻԿԱՑՈՒՄ (ՀԱՆՈՒՄ)</h3>
-            <p style="font-size: 11px; margin-bottom: 10px; color: #ddd;">Ընտրեք կանխիկացման եղանակը</p>
+            <p style="font-size: 10px; margin-bottom: 8px; color: #ddd;">Ընտրեք կանխիկացման եղանակը</p>
             <button class="option-btn" onclick="processCashout('Telegram Stars')">⭐ Փոխանցել Telegram Stars-ին</button>
             <button class="option-btn" onclick="processCashout('Bank Card')">💳 Բանկային քարտին (Armenian Card)</button>
             <button class="close-modal" onclick="closeModal('cashoutModal')">Փակել</button>
@@ -362,17 +371,17 @@
         let spinInterval = null;
 
         // Jackpots auto-increment simulation
-        let jpValues = { spade: 12450, heart: 8320, diamond: 5100, club: 2900 };
+        let jpValues = { spade: 14250, heart: 9810, diamond: 6400, club: 3150 };
         setInterval(() => {
-            jpValues.spade += Math.floor(Math.random() * 5);
-            jpValues.heart += Math.floor(Math.random() * 4);
-            jpValues.diamond += Math.floor(Math.random() * 3);
-            jpValues.club += Math.floor(Math.random() * 2);
+            jpValues.spade += Math.floor(Math.random() * 6);
+            jpValues.heart += Math.floor(Math.random() * 5);
+            jpValues.diamond += Math.floor(Math.random() * 4);
+            jpValues.club += Math.floor(Math.random() * 3);
             document.getElementById('jpSpade').innerText = jpValues.spade.toLocaleString() + ' ֏';
             document.getElementById('jpHeart').innerText = jpValues.heart.toLocaleString() + ' ֏';
             document.getElementById('jpDiamond').innerText = jpValues.diamond.toLocaleString() + ' ֏';
             document.getElementById('jpClub').innerText = jpValues.club.toLocaleString() + ' ֏';
-        }, 2000);
+        }, 1500);
 
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
@@ -383,25 +392,35 @@
             osc.connect(gain);
             gain.connect(audioCtx.destination);
 
+            let now = audioCtx.currentTime;
+
             if (type === 'click') {
-                osc.frequency.setValueAtTime(400, audioCtx.currentTime);
-                gain.gain.setValueAtTime(0.03, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.03);
-                osc.start(); osc.stop(audioCtx.currentTime + 0.03);
+                osc.frequency.setValueAtTime(450, now);
+                gain.gain.setValueAtTime(0.04, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
+                osc.start(now); osc.stop(now + 0.04);
             } else if (type === 'spinTick') {
-                osc.frequency.setValueAtTime(200 + Math.random() * 100, audioCtx.currentTime);
-                gain.gain.setValueAtTime(0.02, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
-                osc.start(); osc.stop(audioCtx.currentTime + 0.05);
-            } else if (type === 'win') {
-                let now = audioCtx.currentTime;
+                osc.type = 'square';
+                osc.frequency.setValueAtTime(180 + Math.random() * 120, now);
+                gain.gain.setValueAtTime(0.02, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
+                osc.start(now); osc.stop(now + 0.06);
+            } else if (type === 'stopReel') {
                 osc.type = 'triangle';
-                osc.frequency.setValueAtTime(523.25, now);
-                osc.frequency.setValueAtTime(659.25, now + 0.1);
-                osc.frequency.setValueAtTime(783.99, now + 0.2);
-                gain.gain.setValueAtTime(0.06, now);
-                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
-                osc.start(now); osc.stop(now + 0.5);
+                osc.frequency.setValueAtTime(300, now);
+                osc.frequency.exponentialRampToValueAtTime(120, now + 0.1);
+                gain.gain.setValueAtTime(0.05, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
+                osc.start(now); osc.stop(now + 0.1);
+            } else if (type === 'win') {
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(440, now);
+                osc.frequency.setValueAtTime(554.37, now + 0.1);
+                osc.frequency.setValueAtTime(659.25, now + 0.2);
+                osc.frequency.setValueAtTime(880, now + 0.3);
+                gain.gain.setValueAtTime(0.08, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.7);
+                osc.start(now); osc.stop(now + 0.7);
             }
         }
 
@@ -432,6 +451,7 @@
         function handleSpinAction() {
             playSound('click');
             const spinBtn = document.getElementById('spinBtn');
+            const cells = document.querySelectorAll('.reel-cell');
 
             if (!isSpinning) {
                 if (balance < currentBet) {
@@ -447,14 +467,14 @@
                 isSpinning = true;
                 spinBtn.innerText = 'ԿԱՆԳՆԵԼ';
                 spinBtn.classList.add('stop-state');
+                cells.forEach(c => c.classList.add('spinning'));
 
-                const cells = document.querySelectorAll('.reel-cell');
                 spinInterval = setInterval(() => {
                     cells.forEach(cell => {
                         cell.innerText = getRandomSymbol();
                         playSound('spinTick');
                     });
-                }, 70);
+                }, 60);
 
             } else {
                 stopSpinAndEvaluate();
@@ -471,6 +491,9 @@
             spinBtn.classList.remove('stop-state');
 
             const cells = document.querySelectorAll('.reel-cell');
+            cells.forEach(c => c.classList.remove('spinning'));
+            playSound('stopReel');
+
             let matrix = [];
             cells.forEach(cell => {
                 let sym = getRandomSymbol();
@@ -484,17 +507,17 @@
             // Middle row evaluation with Crown Wild
             let m1 = matrix[3], m2 = matrix[4], m3 = matrix[5];
             if ((m1 === m2 && m2 === m3) || m1 === '👑' || m2 === '👑' || m3 === '👑') {
-                winAmount += currentBet * 10;
+                winAmount += currentBet * 12;
                 winningIndices.push(3, 4, 5);
             }
 
             // Top & Bottom rows
             if (matrix[0] === matrix[1] && matrix[1] === matrix[2]) {
-                winAmount += currentBet * 5;
+                winAmount += currentBet * 6;
                 winningIndices.push(0, 1, 2);
             }
             if (matrix[6] === matrix[7] && matrix[7] === matrix[8]) {
-                winAmount += currentBet * 5;
+                winAmount += currentBet * 6;
                 winningIndices.push(6, 7, 8);
             }
 

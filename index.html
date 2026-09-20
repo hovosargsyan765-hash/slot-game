@@ -3,432 +3,495 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Shining Crown PRO 👑</title>
+    <title>Burning Hot Pro - Telegram Casino</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
+        :root {
+            --bg-color: #071f0d;
+            --panel-bg: #0b3114;
+            --gold: #f3c653;
+            --gold-light: #ffea9f;
+            --accent-red: #d32f2f;
+            --text-color: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+            -webkit-user-select: none;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
         body {
-            background: radial-gradient(circle, #400 0%, #1a0000 70%, #000 100%);
-            color: #fff;
-            font-family: 'Segoe UI', Arial, sans-serif;
+            background: radial-gradient(circle at center, #11421b 0%, var(--bg-color) 100%);
+            color: var(--text-color);
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: space-between;
-            height: 100vh;
-            height: 100dvh;
+            padding: 10px;
             overflow: hidden;
-            padding: 8px;
         }
-        .header-top {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 4px;
-            width: 100%;
-            max-width: 450px;
-        }
-        .jackpot-box {
-            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
-            border: 2px solid #ffd700;
-            border-radius: 6px;
-            padding: 3px;
-            text-align: center;
-            box-shadow: 0 0 10px rgba(255,215,0,0.4);
-        }
-        .jp-title { font-size: 7px; color: #ffeb3b; font-weight: bold; }
-        .jp-val { font-size: 9px; color: #fff; font-weight: bold; }
 
-        .main-container {
-            background: linear-gradient(180deg, #600, #200);
-            border: 4px solid #ffd700;
-            border-radius: 14px;
-            padding: 8px;
-            box-shadow: 0 0 25px rgba(255,215,0,0.6);
+        header {
             width: 100%;
-            max-width: 450px;
-        }
-        .slot-title {
-            text-align: center;
-            font-size: 18px;
-            font-weight: 900;
-            color: #ffd700;
-            text-shadow: 0 0 10px #ff0, 0 0 20px #f00;
-            margin-bottom: 4px;
-            letter-spacing: 2px;
-        }
-        .slots-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 5px;
-            background: #0a0a0a;
-            padding: 6px;
-            border-radius: 8px;
-            border: 2px inset #444;
-        }
-        .reel {
-            background: linear-gradient(to bottom, #ffffff, #e0e0e0, #ffffff);
-            height: 72px;
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 36px;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.6);
-            border: 2px solid #b8860b;
-        }
-        .info-panel {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: 6px;
-            background: rgba(0,0,0,0.7);
-            padding: 5px 8px;
-            border-radius: 6px;
-            border: 1px solid #555;
-        }
-        .panel-block { text-align: center; }
-        .panel-label { font-size: 8px; color: #aaa; text-transform: uppercase; }
-        .panel-value { font-size: 12px; font-weight: bold; color: #00ffcc; }
-        
-        .bets-container {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 4px;
-            width: 100%;
-            max-width: 450px;
-        }
-        .bet-btn {
-            background: linear-gradient(to bottom, #333, #111);
-            border: 2px solid #555;
-            color: #fff;
-            padding: 6px 0;
-            border-radius: 6px;
-            font-weight: bold;
-            font-size: 11px;
-            cursor: pointer;
-        }
-        .bet-btn.active {
-            background: linear-gradient(to bottom, #2e7d32, #1b5e20);
-            border-color: #4caf50;
-            box-shadow: 0 0 8px #4caf50;
-            color: #ffeb3b;
+            background: var(--panel-bg);
+            border: 2px solid var(--gold);
+            border-radius: 12px;
+            padding: 8px 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
 
-        .bottom-actions {
+        .balance-box, .win-box {
             display: flex;
+            flex-direction: column;
             align-items: center;
-            justify-content: space-around;
-            width: 100%;
-            max-width: 450px;
-            margin-bottom: 4px;
         }
 
-        .spin-btn-round {
-            width: 85px;
-            height: 85px;
-            border-radius: 50%;
-            background: radial-gradient(circle, #ff9800, #e65100);
-            border: 4px solid #ffd700;
-            color: white;
-            font-size: 15px;
-            font-weight: 900;
-            cursor: pointer;
-            box-shadow: 0 0 20px rgba(255,152,0,0.9);
+        .label {
+            font-size: 10px;
+            color: var(--gold);
             text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: bold;
+        }
+
+        .value {
+            font-size: 16px;
+            font-weight: bold;
+            color: var(--text-color);
+        }
+
+        .top-up-btn {
+            background: linear-gradient(135deg, #ffcc00, #ff9900);
+            border: none;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            font-size: 18px;
+            cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
+            box-shadow: 0 2px 8px rgba(255, 153, 0, 0.5);
             transition: transform 0.1s;
         }
-        .spin-btn-round.stop-mode {
-            background: radial-gradient(circle, #f44336, #b71c1c);
-            border-color: #ff8a80;
-            box-shadow: 0 0 20px rgba(244,67,54,0.9);
-            font-size: 13px;
-        }
-        .spin-btn-round:active { transform: scale(0.92); }
 
-        .stars-btn {
-            background: linear-gradient(to bottom, #00b0ff, #002884);
-            border: 2px solid #40c4ff;
-            color: white;
-            padding: 8px 12px;
-            border-radius: 8px;
-            font-weight: bold;
-            font-size: 11px;
-            cursor: pointer;
-            box-shadow: 0 0 10px rgba(0,176,255,0.5);
+        .top-up-btn:active {
+            transform: scale(0.9);
         }
-        .msg-alert {
-            font-size: 10px;
-            color: #ffeb3b;
+
+        /* Slot Machine Area */
+        .slot-container {
+            position: relative;
+            background: linear-gradient(180deg, #0d3815 0%, #051408 100%);
+            border: 4px solid var(--gold);
+            border-radius: 16px;
+            padding: 10px;
+            box-shadow: 0 0 25px rgba(243, 198, 83, 0.3), inset 0 0 15px rgba(0,0,0,0.8);
+            width: 100%;
+            max-width: 340px;
+        }
+
+        .grid-3x3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+
+        .reel-cell {
+            background: radial-gradient(circle, #ffffff 0%, #e0e0e0 100%);
+            border: 2px solid #b8860b;
+            border-radius: 10px;
+            height: 85px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 42px;
+            box-shadow: inset 0 4px 8px rgba(0,0,0,0.3);
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        .reel-cell.winning {
+            background: radial-gradient(circle, #ffffa3 0%, #ffcc00 100%);
+            border-color: #ff3300;
+            animation: pulseWin 0.5s infinite alternate;
+        }
+
+        @keyframes pulseWin {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.05); }
+        }
+
+        /* Controls Panel */
+        .controls-panel {
+            width: 100%;
+            max-width: 340px;
+            background: var(--panel-bg);
+            border: 2px solid var(--gold);
+            border-radius: 14px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        .bets-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 5px;
+        }
+
+        .bet-btn {
+            flex: 1;
+            background: #113f1b;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            padding: 6px 0;
+            border-radius: 6px;
+            font-size: 12px;
             font-weight: bold;
-            height: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .bet-btn.active {
+            background: var(--gold);
+            color: #000;
+            box-shadow: 0 0 10px var(--gold);
+        }
+
+        /* Round Spin Button */
+        .action-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .spin-btn {
+            width: 85px;
+            height: 85px;
+            border-radius: 50%;
+            background: linear-gradient(145deg, #ff3333, #990000);
+            border: 4px solid var(--gold);
+            color: #fff;
+            font-size: 18px;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(211, 47, 47, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.1s, background 0.2s;
+            outline: none;
+        }
+
+        .spin-btn:active {
+            transform: scale(0.92);
+        }
+
+        .spin-btn.stop-state {
+            background: linear-gradient(145deg, #ff9900, #cc6600);
+        }
+
+        /* Modal TopUp */
+        .modal {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+        }
+
+        .modal-content {
+            background: var(--panel-bg);
+            border: 2px solid var(--gold);
+            padding: 20px;
+            border-radius: 12px;
             text-align: center;
+            width: 85%;
+            max-width: 300px;
+        }
+
+        .modal-content h3 {
+            color: var(--gold);
+            margin-bottom: 12px;
+        }
+
+        .star-option {
+            background: #113f1b;
+            border: 1px solid var(--gold);
+            color: #fff;
+            padding: 10px;
+            margin: 6px 0;
+            border-radius: 8px;
+            width: 100%;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .star-option:hover {
+            background: var(--gold);
+            color: #000;
+        }
+
+        .close-modal {
+            margin-top: 10px;
+            background: #666;
+            color: #fff;
+            border: none;
+            padding: 6px 15px;
+            border-radius: 6px;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
 
-    <div class="header-top">
-        <div class="jackpot-box"><div class="jp-title">♠ SPADES</div><div class="jp-val">52,787</div></div>
-        <div class="jackpot-box"><div class="jp-title">♥ HEARTS</div><div class="jp-val">3,351</div></div>
-        <div class="jackpot-box"><div class="jp-title">♦ DIAMOND</div><div class="jp-val">37,597</div></div>
-        <div class="jackpot-box"><div class="jp-title">♣ CLUBS</div><div class="jp-val">48,594</div></div>
-    </div>
-
-    <div class="main-container">
-        <div class="slot-title">👑 SHINING CROWN PRO 👑</div>
-        <div class="slots-grid">
-            <div class="reel" id="r0">🍒</div>
-            <div class="reel" id="r1">🍋</div>
-            <div class="reel" id="r2">🍊</div>
-            <div class="reel" id="r3">🍇</div>
-            <div class="reel" id="r4">👑</div>
-            <div class="reel" id="r5">🔔</div>
-            <div class="reel" id="r6">🍉</div>
-            <div class="reel" id="r7">🍇</div>
-            <div class="reel" id="r8">🍒</div>
+    <header>
+        <div class="balance-box">
+            <span class="label">ԲԱԼԱՆՍ</span>
+            <span class="value" id="balanceVal">1000 ֏</span>
         </div>
-        <div class="info-panel">
-            <div class="panel-block">
-                <div class="panel-label">Balance</div>
-                <div class="panel-value" id="balance-val">100 AMD</div>
-            </div>
-            <div class="msg-alert" id="msg-alert"></div>
-            <div class="panel-block">
-                <div class="panel-label">Last Win</div>
-                <div class="panel-value" id="win-val">0 AMD</div>
-            </div>
+        <div class="win-box">
+            <span class="label">ՇԱՀՈՒՄ</span>
+            <span class="value" id="winVal">0 ֏</span>
+        </div>
+        <button class="top-up-btn" onclick="openModal()">⭐</button>
+    </header>
+
+    <div class="slot-container">
+        <div class="grid-3x3" id="slotGrid">
+            <!-- 9 cells -->
+            <div class="reel-cell">🍒</div>
+            <div class="reel-cell">🍋</div>
+            <div class="reel-cell">👑</div>
+            <div class="reel-cell">🍉</div>
+            <div class="reel-cell">⭐</div>
+            <div class="reel-cell">🍇</div>
+            <div class="reel-cell">🔔</div>
+            <div class="reel-cell">🍊</div>
+            <div class="reel-cell">🍒</div>
         </div>
     </div>
 
-    <div class="bets-container">
-        <button class="bet-btn active" onclick="setBet(10)">10</button>
-        <button class="bet-btn" onclick="setBet(20)">20</button>
-        <button class="bet-btn" onclick="setBet(30)">30</button>
-        <button class="bet-btn" onclick="setBet(40)">40</button>
-        <button class="bet-btn" onclick="setBet(50)">50</button>
+    <div class="controls-panel">
+        <div class="bets-row" id="betsRow">
+            <button class="bet-btn active" onclick="setBet(10)">10</button>
+            <button class="bet-btn" onclick="setBet(20)">20</button>
+            <button class="bet-btn" onclick="setBet(30)">30</button>
+            <button class="bet-btn" onclick="setBet(40)">40</button>
+            <button class="bet-btn" onclick="setBet(50)">50</button>
+        </div>
+        <div class="action-row">
+            <button class="spin-btn" id="spinBtn" onclick="handleSpinAction()">ՊՏՏԵԼ</button>
+        </div>
     </div>
 
-    <div class="bottom-actions">
-        <button class="stars-btn" onclick="buyStars()">⭐ Buy Stars</button>
-        <button class="spin-btn-round" id="spin-btn" onclick="handleSpinAction()">SPIN</button>
+    <!-- Modal for Telegram Stars TopUp -->
+    <div class="modal" id="topUpModal">
+        <div class="modal-content">
+            <h3>ՀԱՇՎԵԿՇՌԻ ՀԱՄԱԼՐՈՒՄ</h3>
+            <p style="font-size: 12px; margin-bottom: 10px; color: #ccc;">Ընտրեք Telegram Stars փաթեթը</p>
+            <button class="star-option" onclick="topUp(500, 50)">⭐ 50 Stars (+500 ֏)</button>
+            <button class="star-option" onclick="topUp(1200, 100)">⭐ 100 Stars (+1200 ֏)</button>
+            <button class="star-option" onclick="topUp(3000, 250)">⭐ 250 Stars (+3000 ֏)</button>
+            <button class="close-modal" onclick="closeModal()">Փակել</button>
+        </div>
     </div>
 
     <script>
-        let tg = null;
-        try {
-            tg = window.Telegram.WebApp;
-            tg.expand();
-        } catch(e) {}
+        const symbols = ['🍒', '🍋', '🍊', '🍇', '🍉', '🔔', '⭐', '👑'];
+        // Weights for Burning Hot feel (Crown and Star are rarer)
+        const weights = [30, 25, 20, 15, 8, 5, 3, 2];
 
-        let balance = 100;
+        let balance = 1000;
         let currentBet = 10;
+        let currentWin = 0;
         let isSpinning = false;
         let spinInterval = null;
-        let forceStopRequested = false;
-        const symbols = ['🍒', '🍋', '🍊', '🍇', '🍉', '🔔', '👑', '⭐'];
+
+        // Web Audio API Sound Synthesizer
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        function playSound(type) {
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            if (type === 'click') {
+                osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+                gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.05);
+            } else if (type === 'spinTick') {
+                osc.frequency.setValueAtTime(300 + Math.random() * 200, audioCtx.currentTime);
+                gain.gain.setValueAtTime(0.03, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.08);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.08);
+            } else if (type === 'win') {
+                let now = audioCtx.currentTime;
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(440, now);
+                osc.frequency.setValueAtTime(554.37, now + 0.1);
+                osc.frequency.setValueAtTime(659.25, now + 0.2);
+                osc.frequency.setValueAtTime(880, now + 0.3);
+                gain.gain.setValueAtTime(0.1, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.6);
+                osc.start(now);
+                osc.stop(now + 0.6);
+            }
+        }
+
+        function getRandomSymbol() {
+            let totalWeight = weights.reduce((a, b) => a + b, 0);
+            let randomNum = Math.random() * totalWeight;
+            for (let i = 0; i < symbols.length; i++) {
+                if (randomNum < weights[i]) return symbols[i];
+                randomNum -= weights[i];
+            }
+            return symbols[0];
+        }
 
         function setBet(amount) {
             if (isSpinning) return;
+            playSound('click');
             currentBet = amount;
             document.querySelectorAll('.bet-btn').forEach(btn => {
-                btn.classList.toggle('active', Number(btn.innerText) === amount);
+                btn.classList.toggle('active', parseInt(btn.innerText) === amount);
             });
-            playClickSound();
         }
 
         function updateUI() {
-            document.getElementById('balance-val').innerText = balance + ' AMD';
-        }
-
-        function buyStars() {
-            playClickSound();
-            balance += 100;
-            updateUI();
-            showAlert("⭐ +100 Բալանսն ավելացավ!");
-            if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
-        }
-
-        function showAlert(text) {
-            const alertEl = document.getElementById('msg-alert');
-            alertEl.innerText = text;
-            setTimeout(() => { alertEl.innerText = ""; }, 3000);
+            document.getElementById('balanceVal').innerText = balance + ' ֏';
+            document.getElementById('winVal').innerText = currentWin + ' ֏';
         }
 
         function handleSpinAction() {
+            playSound('click');
+            const spinBtn = document.getElementById('spinBtn');
+
             if (!isSpinning) {
-                startSpin();
+                if (balance < currentBet) {
+                    alert('Բալանսը բավարար չէ։ Համալրեք հաշիվը ⭐ կոճակով։');
+                    return;
+                }
+
+                balance -= currentBet;
+                currentWin = 0;
+                updateUI();
+                clearWinningCells();
+
+                isSpinning = true;
+                spinBtn.innerText = 'ԿԱՆԳՆԵԼ';
+                spinBtn.classList.add('stop-state');
+
+                const cells = document.querySelectorAll('.reel-cell');
+                spinInterval = setInterval(() => {
+                    cells.forEach(cell => {
+                        cell.innerText = getRandomSymbol();
+                        playSound('spinTick');
+                    });
+                }, 90);
+
             } else {
-                forceStopRequested = true;
+                stopSpinAndEvaluate();
             }
         }
 
-        function startSpin() {
-            if (balance < currentBet) {
-                showAlert("ԲԱԼԱՆՍԸ ՉԻ ԲԱՎԱՐԱՐՈՒՄ!");
-                if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('error');
-                return;
-            }
+        function stopSpinAndEvaluate() {
+            clearInterval(spinInterval);
+            isSpinning, isSpinning = false;
+            const spinBtn = document.getElementById('spinBtn');
+            spinBtn.innerText = 'ՊՏՏԵԼ';
+            spinBtn.classList.remove('stop-state');
 
-            balance -= currentBet;
-            updateUI();
-            isSpinning = true;
-            forceStopRequested = false;
-            
-            const spinBtn = document.getElementById('spin-btn');
-            spinBtn.innerText = "STOP";
-            spinBtn.classList.add('stop-mode');
-            
-            document.getElementById('win-val').innerText = "0 AMD";
-            playSpinSound();
+            const cells = document.querySelectorAll('.reel-cell');
+            let matrix = [];
+            cells.forEach(cell => {
+                let sym = getRandomSymbol();
+                cell.innerText = sym;
+                matrix.push(sym);
+            });
 
-            spinInterval = setInterval(() => {
-                for (let i = 0; i < 9; i++) {
-                    document.getElementById('r' + i).innerText = symbols[Math.floor(Math.random() * symbols.length)];
-                }
-            }, 50);
-
-            let autoStopTimer = setTimeout(() => {
-                if (isSpinning) finishSpin();
-            }, 1500);
-
-            window.checkStopCondition = setInterval(() => {
-                if (forceStopRequested && isSpinning) {
-                    clearTimeout(autoStopTimer);
-                    clearInterval(window.checkStopCondition);
-                    finishSpin();
-                }
-            }, 50);
-        }
-
-        function finishSpin() {
-            if (spinInterval) clearInterval(spinInterval);
-            if (window.checkStopCondition) clearInterval(window.checkStopCondition);
-
-            // Հավանականություններ ըստ բեթերի (40-50 -> 2%, 20-30 -> 10%, 10 -> 15.2%)
-            let winChance = 0.152;
-            if (currentBet >= 40) {
-                winChance = 0.02;
-            } else if (currentBet >= 20) {
-                winChance = 0.10;
-            }
-
-            let isWin = Math.random() < winChance;
-            let finalRes = [];
-
-            // Երբեմն (հնարավորության 20%-ում) կարող է ամբողջ դաշտը նույնը լինել (հնգապատիկի համար)
-            let isFullFieldWin = isWin && (Math.random() < 0.20);
-
-            if (isWin) {
-                let winningSym = symbols[Math.floor(Math.random() * symbols.length)];
-                for (let i = 0; i < 9; i++) {
-                    if (isFullFieldWin) {
-                        finalRes.push(winningSym);
-                    } else if (i === 3 || i === 4 || i === 5) {
-                        // Միջին գիծը շահող է
-                        finalRes.push(winningSym);
-                    } else {
-                        finalRes.push(symbols[Math.floor(Math.random() * symbols.length)]);
-                    }
-                }
-            } else {
-                for (let i = 0; i < 9; i++) {
-                    finalRes.push(symbols[Math.floor(Math.random() * symbols.length)]);
-                }
-                // Ապահովում ենք, որ պատահականորեն միջին գիծը չհամընկնի
-                if (finalRes[3] === finalRes[4] && finalRes[4] === finalRes[5]) {
-                    finalRes[5] = (symbols.find(s => s !== finalRes[4]) || '🍒');
-                }
-            }
-
-            for (let i = 0; i < 9; i++) {
-                document.getElementById('r' + i).innerText = finalRes[i];
-            }
-
+            // Evaluation logic with multipliers
             let winAmount = 0;
-            
-            // Ստուգում ենք՝ արդյոք ամբողջ դաշտը նույնն է (հնգապատիկ)
-            let allSame = finalRes.every(val => val === finalRes[0]);
+            let winningIndices = [];
 
-            if (allSame) {
-                winAmount = currentBet * 5; // Հնգապատիկ
-                showAlert("ԱՄԲՈՂՋ ԴԱՇՏԸ! 5x ՇԱՀՈՒՄ: " + winAmount + " AMD! 👑");
-            } else if (finalRes[3] === finalRes[4] && finalRes[4] === finalRes[5]) {
-                winAmount = currentBet * 2; // Կրկնապատիկ (միջին գիծ)
-                showAlert("ՄԻՋԻՆ ԳԻԾ! 2x ՇԱՀՈՒՄ: " + winAmount + " AMD! 🎉");
+            // 1. Check middle row (Index 3, 4, 5) -> 2x Multiplier
+            if (matrix[3] === matrix[4] && matrix[4] === matrix[5] || matrix[3] === '👑' || matrix[4] === '👑') {
+                winAmount += currentBet * 4 * 2; // 2x middle row win bonus
+                winningIndices.push(3, 4, 5);
+            }
+
+            // 2. Check full field grid (all 9 items match or wild crown domination) -> 5x Multiplier
+            let firstSym = matrix[0];
+            let allMatch = matrix.every(s => s === firstSym || s === '👑');
+            if (allMatch) {
+                winAmount += currentBet * 20 * 5; // 5x full field win bonus
+                winningIndices = [0,1,2,3,4,5,6,7,8];
+            } else if (matrix[0] === matrix[1] && matrix[1] === matrix[2]) {
+                winAmount += currentBet * 3;
+                winningIndices.push(0, 1, 2);
+            } else if (matrix[6] === matrix[7] && matrix[7] === matrix[8]) {
+                winAmount += currentBet * 3;
+                winningIndices.push(6, 7, 8);
             }
 
             if (winAmount > 0) {
+                currentWin = winAmount;
                 balance += winAmount;
-                document.getElementById('win-val').innerText = winAmount + ' AMD';
-                playWinSound();
-                if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+                playSound('win');
+                winningIndices.forEach(idx => {
+                    cells[idx].classList.add('winning');
+                });
             }
 
             updateUI();
-            isSpinning = false;
-            
-            const spinBtn = document.getElementById('spin-btn');
-            spinBtn.innerText = "SPIN";
-            spinBtn.classList.remove('stop-mode');
         }
 
-        let audioCtx = null;
-        function initAudio() {
-            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            if (audioCtx.state === 'suspended') audioCtx.resume();
+        function clearWinningCells() {
+            document.querySelectorAll('.reel-cell').forEach(cell => {
+                cell.classList.remove('winning');
+            });
         }
 
-        function playClickSound() {
-            try {
-                initAudio();
-                if(!audioCtx) return;
-                let osc = audioCtx.createOscillator();
-                let gain = audioCtx.createGain();
-                osc.connect(gain); gain.connect(audioCtx.destination);
-                osc.frequency.setValueAtTime(440, audioCtx.currentTime);
-                gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
-                osc.start(); osc.stop(audioCtx.currentTime + 0.08);
-            } catch(e) {}
+        function openModal() {
+            playSound('click');
+            document.getElementById('topUpModal').style.display = 'flex';
         }
 
-        function playSpinSound() {
-            try {
-                initAudio();
-                if(!audioCtx) return;
-                let osc = audioCtx.createOscillator();
-                let gain = audioCtx.createGain();
-                osc.type = 'sawtooth';
-                osc.connect(gain); gain.connect(audioCtx.destination);
-                osc.frequency.setValueAtTime(120, audioCtx.currentTime);
-                osc.frequency.linearRampToValueAtTime(350, audioCtx.currentTime + 1.0);
-                gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 1.0);
-                osc.start(); osc.stop(audioCtx.currentTime + 1.0);
-            } catch(e) {}
+        function closeModal() {
+            playSound('click');
+            document.getElementById('topUpModal').style.display = 'none';
         }
 
-        function playWinSound() {
-            try {
-                initAudio();
-                if(!audioCtx) return;
-                let now = audioCtx.currentTime;
-                [523.25, 659.25, 783.99, 1046.50].forEach((freq, index) => {
-                    let osc = audioCtx.createOscillator();
-                    let gain = audioCtx.createGain();
-                    osc.type = 'triangle';
-                    osc.connect(gain); gain.connect(audioCtx.destination);
-                    osc.frequency.setValueAtTime(freq, now + index * 0.08);
-                    gain.gain.setValueAtTime(0.25, now + index * 0.08);
-                    gain.gain.exponentialRampToValueAtTime(0.01, now + index * 0.08 + 0.3);
-                    osc.start(now + index * 0.08);
-                    osc.stop(now + index * 0.08 + 0.3);
-                });
-            } catch(e) {}
+        function topUp(amount, stars) {
+            playSound('win');
+            balance += amount;
+            updateUI();
+            closeModal();
+            alert(`Հաջողությամբ համալրվեց +${amount} ֏ (${stars} Stars)!`);
         }
+
+        updateUI();
     </script>
 </body>
 </html>

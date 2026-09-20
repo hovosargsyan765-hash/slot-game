@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Burning Hot - PRO v12</title>
+    <title>Burning Hot - PRO v60</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         :root {
@@ -78,8 +78,9 @@
             background: var(--panel-bg);
             border: 2px solid var(--gold);
             border-radius: 6px;
-            padding: 4px 6px;
+            padding: 4px 5px;
             box-shadow: 0 3px 8px rgba(0,0,0,0.8);
+            gap: 3px;
         }
 
         .balance-box, .win-box {
@@ -89,14 +90,14 @@
         }
 
         .label {
-            font-size: 6px;
+            font-size: 5px;
             color: var(--gold);
             text-transform: uppercase;
             font-weight: bold;
         }
 
         .value {
-            font-size: 11px;
+            font-size: 10px;
             font-weight: bold;
             color: var(--text-color);
         }
@@ -105,11 +106,12 @@
             background: linear-gradient(135deg, #ffcc00, #ff8800);
             border: 1px solid #fff;
             border-radius: 4px;
-            padding: 3px 6px;
-            font-size: 9px;
+            padding: 3px 4px;
+            font-size: 8px;
             font-weight: bold;
             color: #000;
             cursor: pointer;
+            white-space: nowrap;
         }
 
         .cashout-btn {
@@ -139,11 +141,11 @@
             background: radial-gradient(circle, #ffffff 0%, #dcdcdc 100%);
             border: 2px solid #b8860b;
             border-radius: 5px;
-            height: 62px;
+            height: 60px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 28px;
+            font-size: 26px;
             box-shadow: inset 0 2px 5px rgba(0,0,0,0.4);
             transition: transform 0.08s ease;
         }
@@ -310,7 +312,6 @@
 
     <div class="slot-container">
         <div class="grid-5x3" id="slotGrid">
-            <!-- 15 cells (5 columns, 3 rows) -->
             <div class="reel-cell" data-col="0" data-row="0">🍇</div>
             <div class="reel-cell" data-col="1" data-row="0">☘️</div>
             <div class="reel-cell" data-col="2" data-row="0">🍊</div>
@@ -348,7 +349,6 @@
         </div>
     </div>
 
-    <!-- Deposit Modal -->
     <div class="modal" id="topUpModal">
         <div class="modal-content">
             <h3>ԴԵՊՈԶԻՏ (ՀԱՄԱԼՐՈՒՄ)</h3>
@@ -359,7 +359,6 @@
         </div>
     </div>
 
-    <!-- Cashout Modal -->
     <div class="modal" id="cashoutModal">
         <div class="modal-content">
             <h3>ԿԱՆԽԻԿԱՑՈՒՄ (ՀԱՆՈՒՄ)</h3>
@@ -379,7 +378,6 @@
         let currentWin = 0;
         let isSpinning = false;
 
-        // Jackpots auto-increment
         let jpValues = { spade: 19400, heart: 13200, diamond: 9100, club: 5000 };
         setInterval(() => {
             jpValues.spade += Math.floor(Math.random() * 5);
@@ -522,7 +520,6 @@
             let winningIndices = [];
             const cells = document.querySelectorAll('.reel-cell');
 
-            // Middle row evaluation (Line 3: indices 5,6,7,8,9)
             let midLine = [m[5], m[6], m[7], m[8], m[9]];
             let baseSym = midLine.find(s => s !== '☘️');
             if (!baseSym) baseSym = '7️⃣';
@@ -564,4 +561,9 @@
             balance += amount;
             updateUI();
             closeModal('topUpModal');
-            alert(`Հ
+            alert(`Հաջողությամբ համալրվեց +${amount} ֏ (${stars} Stars)!`);
+        }
+
+        function processCashout(method) {
+            if (balance <= 0) {
+        

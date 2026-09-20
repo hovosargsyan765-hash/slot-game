@@ -151,8 +151,8 @@
             box-shadow: 0 0 10px rgba(0,176,255,0.5);
         }
         .msg-alert {
-            font-size: 12px;
-            color: #ff5252;
+            font-size: 11px;
+            color: #ffeb3b;
             font-weight: bold;
             height: 16px;
             text-align: center;
@@ -184,7 +184,7 @@
         <div class="info-panel">
             <div class="panel-block">
                 <div class="panel-label">Balance</div>
-                <div class="panel-value" id="balance-val">150 AMD</div>
+                <div class="panel-value" id="balance-val">100 AMD</div>
             </div>
             <div class="msg-alert" id="msg-alert"></div>
             <div class="panel-block">
@@ -208,10 +208,15 @@
     </div>
 
     <script>
-        const tg = window.Telegram.WebApp;
-        tg.expand();
+        let tg = null;
+        try {
+            tg = window.Telegram.WebApp;
+            tg.expand();
+        } catch(e) {
+            console.log("Not inside Telegram");
+        }
 
-        let balance = 150;
+        let balance = 100;
         let currentBet = 10;
         let isSpinning = false;
         const symbols = ['🍒', '🍋', '🍊', '🍇', '🍉', '🔔', '👑', '⭐'];
@@ -220,7 +225,7 @@
             if (isSpinning) return;
             currentBet = amount;
             document.querySelectorAll('.bet-btn').forEach(btn => {
-                btn.classList.toggle('active', btn.innerText == amount);
+                btn.classList.toggle('active', Number(btn.innerText) === amount);
             });
             playClickSound();
         }
@@ -231,11 +236,11 @@
 
         function buyStars() {
             playClickSound();
-            // Simulation of Telegram Stars top-up (Adds +200 credits)
-            balance += 200;
+            // Աստղերի ձեռքբերման սիմուլյացիա կամ Ինվոյսի հարցում
+            balance += 100;
             updateUI();
-            showAlert("⭐ +200 Stars Added Successfully!");
-            if (tg.HapticFeedback) {
+            showAlert("⭐ +100 Բալանսն ավելացավ!");
+            if (tg && tg.HapticFeedback) {
                 tg.HapticFeedback.notificationOccurred('success');
             }
         }
@@ -243,13 +248,15 @@
         function showAlert(text) {
             const alertEl = document.getElementById('msg-alert');
             alertEl.innerText = text;
-            setTimeout(() => { alertEl.innerText = ""; }, 2500);
+            setTimeout(() => { alertEl.innerText = ""; }, 3000);
         }
 
         function startSpin() {
             if (isSpinning) return;
+            
             if (balance < currentBet) {
-                showAlert("INSUFFICIENT BALANCE!");
+                showAlert("ԲԱԼԱՆՍԸ ՉԻ ԲԱՎԱՐԱՐՈՒՄ!");
+                if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('error');
                 return;
             }
 
@@ -264,7 +271,7 @@
                 for (let i = 0; i < 9; i++) {
                     document.getElementById('r' + i).innerText = symbols[Math.floor(Math.random() * symbols.length)];
                 }
-            }, 70);
+            }, 60);
 
             setTimeout(() => {
                 clearInterval(interval);
@@ -277,71 +284,82 @@
                 }
 
                 let winAmount = 0;
-                // Check middle line win
+                // Ստուգում ենք միջին գծի շահումը
                 if (finalRes[3] === finalRes[4] && finalRes[4] === finalRes[5]) {
-                    winAmount = currentBet * 8;
+                    winAmount = currentBet * 6;
                 }
 
                 if (winAmount > 0) {
                     balance += winAmount;
                     document.getElementById('win-val').innerText = winAmount + ' AMD';
-                    showAlert("WIN: " + winAmount + " AMD! 🎉");
+                    showAlert("ՇԱՀՈՒՄ: " + winAmount + " AMD! 🎉");
                     playWinSound();
-                    if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+                    if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
                 }
 
                 updateUI();
                 isSpinning = false;
                 document.getElementById('spin-btn').disabled = false;
-            }, 1400);
+            }, 1200);
         }
 
         let audioCtx = null;
         function initAudio() {
-            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
         }
 
         function playClickSound() {
-            initAudio();
-            if(!audioCtx) return;
-            let osc = audioCtx.createOscillator();
-            let gain = audioCtx.createGain();
-            osc.connect(gain); gain.connect(audioCtx.destination);
-            osc.frequency.setValueAtTime(440, audioCtx.currentTime);
-            gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
-            osc.start(); osc.stop(audioCtx.currentTime + 0.08);
+            try {
+                initAudio();
+                if(!audioCtx) return;
+                let osc = audioCtx.createOscillator();
+                let gain = audioCtx.createGain();
+                osc.connect(gain); gain.connect(audioCtx.destination);
+                osc.frequency.setValueAtTime(440, audioCtx.currentTime);
+                gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.08);
+            } catch(e) {}
         }
 
         function playSpinSound() {
-            initAudio();
-            if(!audioCtx) return;
-            let osc = audioCtx.createOscillator();
-            let gain = audioCtx.createGain();
-            osc.type = 'sawtooth';
-            osc.connect(gain); gain.connect(audioCtx.destination);
-            osc.frequency.setValueAtTime(120, audioCtx.currentTime);
-            osc.frequency.linearRampToValueAtTime(350, audioCtx.currentTime + 1.2);
-            gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 1.2);
-            osc.start(); osc.stop(audioCtx.currentTime + 1.2);
+            try {
+                initAudio();
+                if(!audioCtx) return;
+                let osc = audioCtx.createOscillator();
+                let gain = audioCtx.createGain();
+                osc.type = 'sawtooth';
+                osc.connect(gain); gain.connect(audioCtx.destination);
+                osc.frequency.setValueAtTime(120, audioCtx.currentTime);
+                osc.frequency.linearRampToValueAtTime(350, audioCtx.currentTime + 1.0);
+                gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 1.0);
+                osc.start(); osc.stop(audioCtx.currentTime + 1.0);
+            } catch(e) {}
         }
 
         function playWinSound() {
-            initAudio();
-            if(!audioCtx) return;
-            let now = audioCtx.currentTime;
-            [523.25, 659.25, 783.99, 1046.50].forEach((freq, index) => {
-                let osc = audioCtx.createOscillator();
-                let gain = audioCtx.createGain();
-                osc.type = 'triangle';
-                osc.connect(gain); gain.connect(audioCtx.destination);
-                osc.frequency.setValueAtTime(freq, now + index * 0.08);
-                gain.gain.setValueAtTime(0.25, now + index * 0.08);
-                gain.gain.exponentialRampToValueAtTime(0.01, now + index * 0.08 + 0.3);
-                osc.start(now + index * 0.08);
-                osc.stop(now + index * 0.08 + 0.3);
-            });
+            try {
+                initAudio();
+                if(!audioCtx) return;
+                let now = audioCtx.currentTime;
+                [523.25, 659.25, 783.99, 1046.50].forEach((freq, index) => {
+                    let osc = audioCtx.createOscillator();
+                    let gain = audioCtx.createGain();
+                    osc.type = 'triangle';
+                    osc.connect(gain); gain.connect(audioCtx.destination);
+                    osc.frequency.setValueAtTime(freq, now + index * 0.08);
+                    gain.gain.setValueAtTime(0.25, now + index * 0.08);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + index * 0.08 + 0.3);
+                    osc.start(now + index * 0.08);
+                    osc.stop(now + index * 0.08 + 0.3);
+                });
+            } catch(e) {}
         }
     </script>
 </body>

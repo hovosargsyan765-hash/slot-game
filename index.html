@@ -127,7 +127,7 @@
             background: radial-gradient(circle, #ff9800, #e65100);
             border: 3px solid #ffd700;
             color: white;
-            font-size: 18px;
+            font-size: 16px;
             font-weight: bold;
             width: 130px;
             height: 48px;
@@ -136,8 +136,12 @@
             box-shadow: 0 0 15px rgba(255,152,0,0.8);
             text-transform: uppercase;
         }
+        .spin-btn.stop-mode {
+            background: radial-gradient(circle, #f44336, #b71c1c);
+            border-color: #ff8a80;
+            box-shadow: 0 0 15px rgba(244,67,54,0.9);
+        }
         .spin-btn:active { transform: scale(0.95); }
-        .spin-btn:disabled { opacity: 0.5; filter: grayscale(50%); }
 
         .stars-btn {
             background: linear-gradient(to bottom, #00b0ff, #002884);
@@ -204,7 +208,7 @@
 
     <div class="controls-container">
         <button class="stars-btn" onclick="buyStars()">⭐ Buy Stars</button>
-        <button class="spin-btn" id="spin-btn" onclick="startSpin()">SPIN</button>
+        <button class="spin-btn" id="spin-btn" onclick="handleSpinAction()">SPIN</button>
     </div>
 
     <script>
@@ -212,13 +216,13 @@
         try {
             tg = window.Telegram.WebApp;
             tg.expand();
-        } catch(e) {
-            console.log("Not inside Telegram");
-        }
+        } catch(e) {}
 
         let balance = 100;
         let currentBet = 10;
         let isSpinning = false;
+        let spinInterval = null;
+        let forceStopRequested = false;
         const symbols = ['🍒', '🍋', '🍊', '🍇', '🍉', '🔔', '👑', '⭐'];
 
         function setBet(amount) {
@@ -236,13 +240,10 @@
 
         function buyStars() {
             playClickSound();
-            // Աստղերի ձեռքբերման սիմուլյացիա կամ Ինվոյսի հարցում
             balance += 100;
             updateUI();
             showAlert("⭐ +100 Բալանսն ավելացավ!");
-            if (tg && tg.HapticFeedback) {
-                tg.HapticFeedback.notificationOccurred('success');
-            }
+            if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
         }
 
         function showAlert(text) {
@@ -251,9 +252,15 @@
             setTimeout(() => { alertEl.innerText = ""; }, 3000);
         }
 
+        function handleSpinAction() {
+            if (!isSpinning) {
+                startSpin();
+            } else {
+                forceStopRequested = true;
+            }
+        }
+
         function startSpin() {
-            if (isSpinning) return;
-            
             if (balance < currentBet) {
                 showAlert("ԲԱԼԱՆՍԸ ՉԻ ԲԱՎԱՐԱՐՈՒՄ!");
                 if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('error');
@@ -263,54 +270,102 @@
             balance -= currentBet;
             updateUI();
             isSpinning = true;
-            document.getElementById('spin-btn').disabled = true;
+            forceStopRequested = false;
+            
+            const spinBtn = document.getElementById('spin-btn');
+            spinBtn.innerText = "STOP ⏹";
+            spinBtn.classList.add('stop-mode');
+            
             document.getElementById('win-val').innerText = "0 AMD";
             playSpinSound();
 
-            let interval = setInterval(() => {
+            spinInterval = setInterval(() => {
                 for (let i = 0; i < 9; i++) {
                     document.getElementById('r' + i).innerText = symbols[Math.floor(Math.random() * symbols.length)];
                 }
-            }, 60);
+            }, 50);
 
-            setTimeout(() => {
-                clearInterval(interval);
-                
-                let finalRes = [];
+            // Ավտոմատ կանգառ 1.5 վայրկյանից, եթե user-ը չի սեղմել STOP
+            let autoStopTimer = setTimeout(() => {
+                if (isSpinning) finishSpin();
+            }, 1500);
+
+            // Եթե սեղմեն STOP, կանգնեցնում ենք ավելի շուտ
+            window.checkStopCondition = setInterval(() => {
+                if (forceStopRequested && isSpinning) {
+                    clearTimeout(autoStopTimer);
+                    clearInterval(window.checkStopCondition);
+                    finishSpin();
+                }
+            }, 50);
+        }
+
+        function finishSpin() {
+            if (spinInterval) clearInterval(spinInterval);
+            if (window.checkStopCondition) clearInterval(window.checkStopCondition);
+
+            // Հավանականությունների որոշում ըստ բեթերի
+            // 10 (ցածր) -> ~15.2% | 20, 30 (միջին) -> ~10% | 40, 50 (բարձր) -> ~2%
+            let winChance = 0.152;
+            if (currentBet >= 40) {
+                winChance = 0.02; // 2% բարձր բեթերի համար
+            } else if (currentBet >= 20) {
+                winChance = 0.10; // 10% միջին բեթերի համար
+            }
+
+            let isWin = Math.random() < winChance;
+            let finalRes = [];
+
+            if (isWin) {
+                // Սարքում ենք շահող կոմբինացիա մեջտեղի գծի համար (ռիելներ 3, 4, 5)
+                let winningSym = symbols[Math.floor(Math.random() * symbols.length)];
                 for (let i = 0; i < 9; i++) {
-                    let sym = symbols[Math.floor(Math.random() * symbols.length)];
-                    document.getElementById('r' + i).innerText = sym;
-                    finalRes.push(sym);
+                    if (i === 3 || i === 4 || i === 5) {
+                        finalRes.push(winningSym);
+                    } else {
+                        finalRes.push(symbols[Math.floor(Math.random() * symbols.length)]);
+                    }
                 }
-
-                let winAmount = 0;
-                // Ստուգում ենք միջին գծի շահումը
+            } else {
+                // Սովորական պատահական ստուգում առանց երաշխավորված շահման
+                for (let i = 0; i < 9; i++) {
+                    finalRes.push(symbols[Math.floor(Math.random() * symbols.length)]);
+                }
+                // Ապահովում ենք, որ պատահականորեն էլ չհամընկնեն միջին գծում, եթե isWin-ը false է
                 if (finalRes[3] === finalRes[4] && finalRes[4] === finalRes[5]) {
-                    winAmount = currentBet * 6;
+                    finalRes[5] = (symbols.find(s => s !== finalRes[4]) || '🍒');
                 }
+            }
 
-                if (winAmount > 0) {
-                    balance += winAmount;
-                    document.getElementById('win-val').innerText = winAmount + ' AMD';
-                    showAlert("ՇԱՀՈՒՄ: " + winAmount + " AMD! 🎉");
-                    playWinSound();
-                    if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
-                }
+            for (let i = 0; i < 9; i++) {
+                document.getElementById('r' + i).innerText = finalRes[i];
+            }
 
-                updateUI();
-                isSpinning = false;
-                document.getElementById('spin-btn').disabled = false;
-            }, 1200);
+            let winAmount = 0;
+            if (finalRes[3] === finalRes[4] && finalRes[4] === finalRes[5]) {
+                winAmount = currentBet * 6;
+            }
+
+            if (winAmount > 0) {
+                balance += winAmount;
+                document.getElementById('win-val').innerText = winAmount + ' AMD';
+                showAlert("ՇԱՀՈՒՄ: " + winAmount + " AMD! 🎉");
+                playWinSound();
+                if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+            }
+
+            updateUI();
+            isSpinning = false;
+            
+            const spinBtn = document.getElementById('spin-btn');
+            spinBtn.innerText = "SPIN";
+            spinBtn.classList.remove('stop-mode');
         }
 
         let audioCtx = null;
         function initAudio() {
-            if (!audioCtx) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            }
-            if (audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
         }
 
         function playClickSound() {

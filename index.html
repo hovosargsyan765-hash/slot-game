@@ -13,7 +13,7 @@
 </head>
 <body class="bg-[#0b0b0e] text-white min-h-screen flex flex-col justify-between pb-28 selection:bg-yellow-500 selection:text-black">
 
-    <!-- Վերևի Վահանակ (Header) -->
+    <!-- Վերևի Վահանակ -->
     <header class="p-4 flex justify-between items-center border-b border-white/5 bg-[#0b0b0e]/80 backdrop-blur-xl sticky top-0 z-40">
         <div class="flex items-center space-x-2.5">
             <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-yellow-600 to-yellow-400 flex items-center justify-center font-black text-black shadow-lg shadow-yellow-500/20 text-lg">
@@ -50,14 +50,12 @@
             </div>
         </div>
 
-        <!-- Բաժինների դինամիկ կոնտեյներ -->
-        <div id="content-container" class="space-y-3">
-            <!-- Տվյալները բեռնվում են JS-ով -->
-        </div>
+        <!-- Բաժինների կոնտեյներ -->
+        <div id="content-container" class="space-y-3"></div>
 
     </main>
 
-    <!-- Ներքևի Նավարկում (Bottom Nav) -->
+    <!-- Ներքևի Նավարկում -->
     <nav class="fixed bottom-0 left-0 right-0 bg-[#0b0b0e]/90 backdrop-blur-xl border-t border-white/10 p-3 flex justify-around z-50">
         <button onclick="switchTab('games')" id="btn-games" class="flex items-center space-x-2 bg-yellow-500 text-black px-6 py-3 rounded-2xl font-bold text-xs transition shadow-lg shadow-yellow-500/20">
             <span class="text-base">🎰</span>
@@ -69,7 +67,6 @@
         </button>
     </nav>
 
-    <!-- Սկրիպտներ և Տրամաբանություն -->
     <script>
         window.onload = function() {
             switchTab('games');
@@ -96,8 +93,7 @@
                         <span class="text-xs text-yellow-500 font-bold">VIP Ցանկ</span>
                     </div>
 
-                    <!-- Խաղ 1 -->
-                    <div class="bg-zinc-950 border border-white/10 p-3.5 rounded-2xl flex items-center justify-between shadow-xl hover:border-yellow-500/50 transition">
+                    <div class="bg-zinc-950 border border-white/10 p-3.5 rounded-2xl flex items-center justify-between shadow-xl">
                         <div class="flex items-center space-x-3.5">
                             <div class="w-14 h-14 bg-gradient-to-br from-zinc-800 to-black border border-white/10 rounded-2xl flex items-center justify-center font-black text-xl text-yellow-500 shadow-inner">💎</div>
                             <div>
@@ -115,8 +111,7 @@
                         </div>
                     </div>
 
-                    <!-- Խաղ 2 -->
-                    <div class="bg-zinc-950 border border-white/10 p-3.5 rounded-2xl flex items-center justify-between shadow-xl hover:border-yellow-500/50 transition">
+                    <div class="bg-zinc-950 border border-white/10 p-3.5 rounded-2xl flex items-center justify-between shadow-xl">
                         <div class="flex items-center space-x-3.5">
                             <div class="w-14 h-14 bg-gradient-to-br from-zinc-800 to-black border border-white/10 rounded-2xl flex items-center justify-center font-black text-xl text-yellow-500 shadow-inner">👑</div>
                             <div>
@@ -134,8 +129,7 @@
                         </div>
                     </div>
 
-                    <!-- Խաղ 3 -->
-                    <div class="bg-zinc-950 border border-white/10 p-3.5 rounded-2xl flex items-center justify-between shadow-xl hover:border-yellow-500/50 transition">
+                    <div class="bg-zinc-950 border border-white/10 p-3.5 rounded-2xl flex items-center justify-between shadow-xl">
                         <div class="flex items-center space-x-3.5">
                             <div class="w-14 h-14 bg-gradient-to-br from-zinc-800 to-black border border-white/10 rounded-2xl flex items-center justify-center font-black text-xl text-yellow-500 shadow-inner">🔥</div>
                             <div>
@@ -144,25 +138,6 @@
                                 <div class="flex gap-1.5 mt-2">
                                     <span class="bg-yellow-500/10 text-yellow-400 text-[10px] font-extrabold px-2 py-0.5 rounded-md">300 FS</span>
                                     <span class="bg-zinc-900 border border-white/5 text-zinc-300 text-[10px] font-extrabold px-2 py-0.5 rounded-md">100%</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex flex-col items-end space-y-2">
-                            <button onclick="copyCode('CASINOBOT')" class="bg-zinc-900 border border-white/10 hover:bg-zinc-800 text-[11px] px-3 py-1 rounded-xl text-zinc-300 font-bold transition">Copy</button>
-                            <a href="https://t.me" target="_blank" class="bg-yellow-500 hover:bg-yellow-400 text-black px-3.5 py-1 rounded-xl font-black text-[11px] transition shadow-md">Խաղալ ↗</a>
-                        </div>
-                    </div>
-
-                    <!-- Խաղ 4 -->
-                    <div class="bg-zinc-950 border border-white/10 p-3.5 rounded-2xl flex items-center justify-between shadow-xl hover:border-yellow-500/50 transition">
-                        <div class="flex items-center space-x-3.5">
-                            <div class="w-14 h-14 bg-gradient-to-br from-zinc-800 to-black border border-white/10 rounded-2xl flex items-center justify-center font-black text-xl text-yellow-500 shadow-inner">⚡</div>
-                            <div>
-                                <h4 class="font-bold text-sm text-white">Fenix Casino</h4>
-                                <p class="text-[11px] text-zinc-400 mt-0.5">Անսահմանափակ բոնուս</p>
-                                <div class="flex gap-1.5 mt-2">
-                                    <span class="bg-yellow-500/10 text-yellow-400 text-[10px] font-extrabold px-2 py-0.5 rounded-md">400 FS</span>
-                                    <span class="bg-zinc-900 border border-white/5 text-zinc-300 text-[10px] font-extrabold px-2 py-0.5 rounded-md">500%</span>
                                 </div>
                             </div>
                         </div>
@@ -182,8 +157,7 @@
                         <span class="text-xs text-yellow-500 font-bold">VIP Ցանկ</span>
                     </div>
                     
-                    <!-- Սպորտ 1 -->
-                    <div class="bg-zinc-950 border border-white/10 p-3.5 rounded-2xl flex items-center justify-between shadow-xl hover:border-yellow-500/50 transition">
+                    <div class="bg-zinc-950 border border-white/10 p-3.5 rounded-2xl flex items-center justify-between shadow-xl">
                         <div class="flex items-center space-x-3.5">
                             <div class="w-14 h-14 bg-gradient-to-br from-zinc-800 to-black border border-white/10 rounded-2xl flex items-center justify-center font-black text-lg text-yellow-500 shadow-inner">⚽</div>
                             <div>
@@ -196,24 +170,6 @@
                         </div>
                         <div class="flex flex-col items-end space-y-2">
                             <button onclick="copyCode('CasiBot100')" class="bg-zinc-900 border border-white/10 hover:bg-zinc-800 text-[11px] px-3 py-1 rounded-xl text-zinc-300 font-bold transition">Copy</button>
-                            <a href="https://t.me" target="_blank" class="bg-yellow-500 hover:bg-yellow-400 text-black px-3.5 py-1 rounded-xl font-black text-[11px] transition shadow-md">Բացել ↗</a>
-                        </div>
-                    </div>
-
-                    <!-- Սպորտ 2 -->
-                    <div class="bg-zinc-950 border border-white/10 p-3.5 rounded-2xl flex items-center justify-between shadow-xl hover:border-yellow-500/50 transition">
-                        <div class="flex items-center space-x-3.5">
-                            <div class="w-14 h-14 bg-gradient-to-br from-zinc-800 to-black border border-white/10 rounded-2xl flex items-center justify-center font-black text-lg text-yellow-500 shadow-inner">🎯</div>
-                            <div>
-                                <h4 class="font-bold text-sm text-white">888Starz</h4>
-                                <p class="text-[11px] text-zinc-400 mt-0.5">Կիբերսպորտ և ֆուտբոլ</p>
-                                <div class="flex gap-1.5 mt-2">
-                                    <span class="bg-yellow-500/10 text-yellow-400 text-[10px] font-extrabold px-2 py-0.5 rounded-md">200% Բոնուս</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex flex-col items-end space-y-2">
-                            <button onclick="copyCode('888_87519')" class="bg-zinc-900 border border-white/10 hover:bg-zinc-800 text-[11px] px-3 py-1 rounded-xl text-zinc-300 font-bold transition">Copy</button>
                             <a href="https://t.me" target="_blank" class="bg-yellow-500 hover:bg-yellow-400 text-black px-3.5 py-1 rounded-xl font-black text-[11px] transition shadow-md">Բացել ↗</a>
                         </div>
                     </div>

